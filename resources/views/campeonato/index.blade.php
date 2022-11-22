@@ -47,10 +47,10 @@
                                                 {!! Form::open(['method' => 'DELETE', 'route' => ['campeonato.destroy', $cam->id], 'style' => 'display:inline']) !!}
                                                 {!! Form::submit('Borrar', ['class' => 'btn btn-danger mb-1 btn-block']) !!}
                                                 {!! Form::close() !!}
-                                                {{-- <a class="btn btn-success mb-1 btn-block"
+                                                <a class="btn btn-success mb-1 btn-block"
                                                     href="{{ route('partidos.generar', $cam->id) }}">Genr. T vs T</a>
                                                 <a class="btn btn-success mb-1 btn-block"
-                                                    href="{{ route('partidos.generarVar', $cam->id) }}">Genr. I y V</a> --}}
+                                                    href="{{ route('partidos.generarVar', $cam->id) }}">Genr. I y V</a>
                                                 @if ($cam->estado == 1)
                                                     <a href="{{ route('partidodownload-pdf', $cam->id) }}"
                                                         class="btn btn-info mb-1 btn-block"><i
