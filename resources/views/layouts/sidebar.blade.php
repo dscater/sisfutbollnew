@@ -1,4 +1,4 @@
-<aside class="main-sidebar sidebar-dark-primary elevation-4 " style="background-color:rgb(5, 162, 44);">
+<aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color:rgb(5, 162, 44);">
     <a href="{{ route('home') }}" class="brand-link">
         <span style="color:white; font-size: 25px; diaplay:block;margin: 0 auto; text-aling:center">SISTEMA </span><br>
         <span style="color:white; font-size: 25px;">FUTBOL</span> <br>

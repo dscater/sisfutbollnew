@@ -23,7 +23,6 @@ class EquipoClubController extends Controller
     {
         $this->validate($request, [
             'name' => 'required',
-
             'fecha_fund'=> 'required',
             'presidente'=> 'required',
             'vicepresidente'=> 'required',
@@ -126,6 +125,6 @@ class EquipoClubController extends Controller
     public function destroy($id)
     {
         equipoClub::find($id)->delete();
-        return redirect()->route('campeonato.index');
+        return redirect()->route('equipos.index');
     }
 }

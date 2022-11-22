@@ -21,7 +21,7 @@
                             </div>
                         @endif
 
-                        {!! Form::open(array('route' => ['noticia.update',$id],'method'=>'PATCH')) !!}
+                        {!! Form::open(array('route' => ['sanciones.update',$id],'method'=>'PATCH')) !!}
                         <div class="box-body">
 
                             <div class="form-group">

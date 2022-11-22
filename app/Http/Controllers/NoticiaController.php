@@ -12,24 +12,29 @@ class NoticiaController extends Controller
         //
         $noticias = Noticia::all();
         $tab = "";
-        for ($i=0; $i < count($noticias); $i++) {
-            $tab.='{
-                "id":"'.$noticias[$i]->{"id"}.'",
-                "contenido":"'.$noticias[$i]->{"contenido"}.'",
-                "descripcion":"'.$noticias[$i]->{"descripcion"}.'",
-                "status":"'.$noticias[$i]->{"status"}.'",
+        for ($i = 0; $i < count($noticias); $i++) {
+            $tab .= '{
+                "id":"' . $noticias[$i]->{"id"} . '",
+                "contenido":"' . $noticias[$i]->{"contenido"} . '",
+                "descripcion":"' . $noticias[$i]->{"descripcion"} . '",
+                "status":"' . $noticias[$i]->{"status"} . '",
             },';
         }
-        $datosjson = substr($tab, 0, strlen($tab)-1);
-        $formatoJson = '{"ragistrosM":['.$datosjson.']}';
+        $datosjson = substr($tab, 0, strlen($tab) - 1);
+        $formatoJson = '{"ragistrosM":[' . $datosjson . ']}';
         $varj = json_encode($noticias);
         echo $varj;
-
     }
     public function index()
     {
         $noticias = Noticia::all();
         return view('noticia.index', compact('noticias'));
+    }
+
+    public function listado()
+    {
+        $noticias = Noticia::all();
+        return view('noticia.listado', compact('noticias'));
     }
     public function create()
     {
@@ -39,17 +44,17 @@ class NoticiaController extends Controller
     {
         $this->validate($request, [
             'titulo' => 'required',
-            'contenido'=> 'required',
-            'descripcion'=> 'required',
-            'status'=> 'required'
+            'contenido' => 'required',
+            'descripcion' => 'required',
+            'status' => 'required'
 
         ]);
-        $input=$request->all();
+        $input = $request->all();
         $doc = Noticia::create([
             'titulo' => $input['titulo'],
-            'contenido'=> $input['contenido'],
-            'descripcion'=> $input['descripcion'],
-            'status'=> $input['status'],
+            'contenido' => $input['contenido'],
+            'descripcion' => $input['descripcion'],
+            'status' => $input['status'],
         ]);
 
 
@@ -63,16 +68,14 @@ class NoticiaController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'nombre' => 'required',
-            'fecha_inicio'=> 'required',
-            'fecha_fin'=> 'required',
-            'descripcion'=> 'required',
-            'estado'=> 'required'
-
+            'titulo' => 'required',
+            'contenido' => 'required',
+            'descripcion' => 'required',
+            'status' => 'required'
         ]);
-        $input=$request->all();
-        //$campeonato = campeonato::find($id);
-        //$campeonato->update($input);
+        $input = $request->all();
+        $noticia = Noticia::find($id);
+        $noticia->update($input);
 
         return redirect()->route('noticia.index');
     }
@@ -82,5 +85,4 @@ class NoticiaController extends Controller
         Noticia::find($id)->delete();
         return redirect()->route('noticia.index');
     }
-
 }

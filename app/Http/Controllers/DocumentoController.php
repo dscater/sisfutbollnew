@@ -12,6 +12,12 @@ class DocumentoController extends Controller
         $documentos = Documento::all();
         return view('documento.index', compact('documentos'));
     }
+
+    public function listado(){
+        $documentos = Documento::all();
+        return view('documento.listado', compact('documentos'));
+    }
+
     public function create()
     {
         return view('documento.create');

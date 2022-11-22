@@ -3,7 +3,6 @@
 @section('content')
     <div class="container-fluid">
         <h1 class="text-black-50">Editar Partido</h1>
-        {{ $partido }}
         <div class="section-body">
             <div class="row">
                 <div class="col-lg-12">
@@ -39,12 +38,12 @@
                             </div>
                             <div class="form-group">
                                 {{ Form::label('gol_equipoA') }}
-                                {{ Form::text('gol_equipoA', $partido->gol_equipoA, ['class' => 'form-control' . ($errors->has('gol_equipoA') ? ' is-invalid' : ''), 'placeholder' => 'gol_equipoA']) }}
+                                {{ Form::text('gol_equipoA', $partido->gol_equipoA, ['class' => 'form-control' . ($errors->has('gol_equipoA') ? ' is-invalid' : ''), 'placeholder' => 'gol equipoA']) }}
                                 {!! $errors->first('gol_equipoA', '<div class="invalid-feedback">:message</div>') !!}
                             </div>
                             <div class="form-group">
                                 {{ Form::label('gol_equipoB') }}
-                                {{ Form::text('gol_equipoB', $partido->gol_equipoB, ['class' => 'form-control' . ($errors->has('gol_equipoB') ? ' is-invalid' : ''), 'placeholder' => 'gol_equipoB']) }}
+                                {{ Form::text('gol_equipoB', $partido->gol_equipoB, ['class' => 'form-control' . ($errors->has('gol_equipoB') ? ' is-invalid' : ''), 'placeholder' => 'gol equipoB']) }}
                                 {!! $errors->first('gol_equipoB', '<div class="invalid-feedback">:message</div>') !!}
                             </div>
                             <div class="form-group">

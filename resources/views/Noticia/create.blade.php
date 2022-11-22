@@ -28,31 +28,31 @@
                         <div class="box-body">
 
                             <div class="form-group">
-                                {{ Form::label('titulo') }}
-                                {{ Form::text('titulo', null, ['class' => 'form-control' . ($errors->has('titulo') ? ' is-invalid' : ''), 'placeholder' => 'titulo']) }}
+                                {{ Form::label('título') }}
+                                {{ Form::text('titulo', null, ['class' => 'form-control' . ($errors->has('titulo') ? ' is-invalid' : ''), 'placeholder' => 'Título']) }}
                                 {!! $errors->first('titulo', '<div class="invalid-feedback">:message</div>') !!}
                             </div>
                             <div class="form-group">
                                 {{ Form::label('contenido') }}
-                                {{ Form::text('contenido', null, ['class' => 'form-control' . ($errors->has('contenido') ? ' is-invalid' : ''), 'placeholder' => 'contenido']) }}
+                                {{ Form::text('contenido', null, ['class' => 'form-control' . ($errors->has('contenido') ? ' is-invalid' : ''), 'placeholder' => 'Contenido']) }}
                                 {!! $errors->first('contenido', '<div class="invalid-feedback">:message</div>') !!}
                             </div>
 
                             <div class="form-group">
-                                {{ Form::label('descripcion') }}
-                                {{ Form::text('descripcion', null, ['class' => 'form-control' . ($errors->has('descripcion') ? ' is-invalid' : ''), 'placeholder' => 'Descripcion']) }}
+                                {{ Form::label('descripción') }}
+                                {{ Form::text('descripcion', null, ['class' => 'form-control' . ($errors->has('descripcion') ? ' is-invalid' : ''), 'placeholder' => 'Descripción']) }}
                                 {!! $errors->first('descripcion', '<div class="invalid-feedback">:message</div>') !!}
                             </div>
                             <div class="form-group">
-                                {{ Form::label('status') }}
-                                {{ Form::text('status', null, ['class' => 'form-control' . ($errors->has('status') ? ' is-invalid' : ''), 'placeholder' => 'status']) }}
+                                {{ Form::label('estado') }}
+                                {{ Form::number('status', null, ['class' => 'form-control' . ($errors->has('status') ? ' is-invalid' : ''), 'placeholder' => 'Estado']) }}
                                 {!! $errors->first('status', '<div class="invalid-feedback">:message</div>') !!}
                             </div>
 
 
                         </div>
                         <div class="box-footer mt20">
-                            <button type="submit" class="btn btn-primary">crear</button>
+                            <button type="submit" class="btn btn-primary">Crear</button>
                         </div>
                         {!! Form::close() !!}
                         </div>

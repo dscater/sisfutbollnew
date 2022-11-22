@@ -6,6 +6,7 @@ use App\Models\campeonato;
 use App\Models\partido;
 use App\Models\equipoClub;
 use App\Models\Inscripcion;
+use App\Models\PuntosPartido;
 use App\Models\TablaPosicion;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
@@ -14,7 +15,7 @@ class PartidoController extends Controller
 {
     public function index()
     {
-        $id= 0;
+        $id = 0;
         $partidos = partido::all()->sortByDesc("fecha_Par");
         //$partidos = partido::select("*")->orderBy("fecha_Par", "desc")->get();
         $campeonato = campeonato::pluck('nombre', 'id');
@@ -44,26 +45,125 @@ class PartidoController extends Controller
 
 
         ]);
-        $input=$request->all();
+        $input = $request->all();
         $partido = partido::find($id);
-        $partido->campeonato_id=$request->campeonato_id;
-        $partido->equipoA_id=$request->equipoA_id;
-        $partido->equipoB_id=$request->equipoB_id;
-        $partido->gol_equipoA=$request->gol_equipoA;
-        $partido->gol_equipoB=$request->gol_equipoB;
-        $partido->fecha_Par=$request->fecha_Par;
-        $partido->hora=$request->hora;
-        $partido->walkover=$request->walkover;
-        $partido->detalle=$request->detalle;
-        $partido->estado=$request->estado;
-        $partido->tipo=$request->tipo;
+        $partido->campeonato_id = $request->campeonato_id;
+        $partido->equipoA_id = $request->equipoA_id;
+        $partido->equipoB_id = $request->equipoB_id;
+        $partido->gol_equipoA = $request->gol_equipoA;
+        $partido->gol_equipoB = $request->gol_equipoB;
+        $partido->fecha_Par = $request->fecha_Par;
+        $partido->hora = $request->hora;
+        $partido->walkover = $request->walkover;
+        $partido->detalle = $request->detalle;
+        $partido->estado = $request->estado;
+        $partido->tipo = $request->tipo;
         $partido->save();
 
 
-        $id= $request->campeonato_id;
+        $puntos_eA = PuntosPartido::where("campeonato_id", $partido->campeonato_id)->where("equipo_id", $partido->equipoA_id)->where("partido_id", $partido->id)->get()->first();
+        if (!$puntos_eA) {
+            $puntos_eA = PuntosPartido::create([
+                "campeonato_id" => $request->campeonato_id,
+                "partido_id" => $partido->id,
+                "equipo_id" => $partido->equipoA_id,
+                "walkover" => 0,
+                "Pj" => 0,
+                "Pg" => 0,
+                "Pp" => 0,
+                "Pe" => 0,
+                "Gf" => 0,
+                "Gc" => 0,
+                "GD" => 0,
+            ]);
+        }
+
+        $puntos_eB = PuntosPartido::where("campeonato_id", $partido->campeonato_id)->where("equipo_id", $partido->equipoB_id)->where("partido_id", $partido->id)->get()->first();
+        if (!$puntos_eB) {
+            $puntos_eB = PuntosPartido::create([
+                "campeonato_id" => $request->campeonato_id,
+                "partido_id" => $partido->id,
+                "equipo_id" => $partido->equipoB_id,
+                "walkover" => 0,
+                "Pj" => 0,
+                "Pg" => 0,
+                "Pp" => 0,
+                "Pe" => 0,
+                "Gf" => 0,
+                "Gc" => 0,
+                "GD" => 0,
+            ]);
+        }
+
+        // ACTUALIZAR LOS PUNTOS DEL CAMPEONATO
+        $goles_A = $partido->gol_equipoA;
+        $goles_B = $partido->gol_equipoB;
+        if ($goles_A > $goles_B) {
+            // gano A
+            $puntos_eA->Pj = 1;
+            $puntos_eA->Pg = 1;
+            $puntos_eA->Pp = 0;
+            $puntos_eA->Pe = 0;
+            $puntos_eA->Gf = (int)$partido->gol_equipoA;
+            $puntos_eA->Gc = (int)$partido->gol_equipoB;
+            $puntos_eA->GD = (int)$puntos_eA->Gf - $puntos_eA->Gc;
+
+            $puntos_eB->Pj = 1;
+            $puntos_eB->Pg = 0;
+            $puntos_eB->Pp = 1;
+            $puntos_eB->Pe = 0;
+            $puntos_eB->Gf = (int)$partido->gol_equipoB;
+            $puntos_eB->Gc = (int)$partido->gol_equipoA;
+            $puntos_eB->GD = (int)$puntos_eB->Gf - $puntos_eB->Gc;
+        } elseif ($goles_B > $goles_A) {
+            // gano B
+            $puntos_eB->Pj = 1;
+            $puntos_eB->Pg = 1;
+            $puntos_eB->Pp = 0;
+            $puntos_eB->Pe = 0;
+            $puntos_eB->Gf = (int)$partido->gol_equipoB;
+            $puntos_eB->Gc = (int)$partido->gol_equipoA;
+            $puntos_eB->GD = (int)$puntos_eB->Gf - $puntos_eB->Gc;
+
+            $puntos_eA->Pj = 1;
+            $puntos_eA->Pg = 0;
+            $puntos_eA->Pp = 1;
+            $puntos_eA->Pe = 0;
+            $puntos_eA->Gf = (int)$partido->gol_equipoA;
+            $puntos_eA->Gc = (int)$partido->gol_equipoB;
+            $puntos_eA->GD = (int)$puntos_eA->Gf - $puntos_eA->Gc;
+        } else {
+            // empate
+            $puntos_eA->Pj = 1;
+            $puntos_eA->Pg = 0;
+            $puntos_eA->Pp = 0;
+            $puntos_eA->Pe = 1;
+            $puntos_eA->Gf = (int)$partido->gol_equipoA;
+            $puntos_eA->Gc = (int)$partido->gol_equipoB;
+            $puntos_eA->GD = (int)$puntos_eA->Gf - $puntos_eA->Gc;
+
+            $puntos_eB->Pj = 1;
+            $puntos_eB->Pg = 0;
+            $puntos_eB->Pp = 0;
+            $puntos_eB->Pe = 1;
+            $puntos_eB->Gf = (int)$partido->gol_equipoB;
+            $puntos_eB->Gc = (int)$partido->gol_equipoA;
+            $puntos_eB->GD = (int)$puntos_eB->Gf - $puntos_eB->Gc;
+        }
+
+        $puntos_eA->save();
+        $puntos_eB->save();
+        // FIN ACTUALIZAR
+
+        $id = $request->campeonato_id;
         $partidos = partido::all()->sortByDesc("fecha_Par");
         $campeonato = campeonato::pluck('nombre', 'id');
         $equipo = equipoClub::pluck('name', 'id');
+
+        if ($partido->estado == 1) {
+            TablaPosicionController::actualizar_posiciones_campeonato($partido->campeonato_id, $puntos_eA->equipo_id, $puntos_eB->equipo_id);
+        }
+
         return view('partidos.index', compact('partidos', 'campeonato', 'equipo', 'id'));
     }
     public function store(Request $request)
@@ -77,7 +177,7 @@ class PartidoController extends Controller
         echo Json_encode($request->campeonato_id);
         echo Json_encode($request->equipoA_id);
         echo Json_encode($request->equipoB_id);
-        $input=$request->all();
+        $input = $request->all();
 
         $partido = new partido();
         $partido->campeonato_id = intval($request->campeonato_id);
@@ -85,7 +185,7 @@ class PartidoController extends Controller
         $partido->equipoB_id = intval($request->equipoB_id);
         $partido->save();
 
-        $id= 'todos los partidos';
+        $id = 'todos los partidos';
         $partidos = partido::all()->sortByDesc("fecha_Par");
         $campeonato = campeonato::pluck('nombre', 'id');
         $equipo = equipoClub::pluck('name', 'id');
@@ -97,13 +197,12 @@ class PartidoController extends Controller
         $Inscrip = Inscripcion::select('equipo_id')->where('campeonato_id', $id)->get();
 
         $dato = array();
-        foreach ($Inscrip as $i =>$Equipo_id) {
+        foreach ($Inscrip as $i => $Equipo_id) {
             $dato[$i] = $Equipo_id->equipo_id;
-
         }
 
-        for ($i=0; $i <= sizeof($dato)-1; $i++) {
-            for ($j=$i+1; $j <= sizeof($dato)-1; $j++) {
+        for ($i = 0; $i <= sizeof($dato) - 1; $i++) {
+            for ($j = $i + 1; $j <= sizeof($dato) - 1; $j++) {
                 $partidoNew = new partido();
                 $partidoNew->campeonato_id = $id;
                 $partidoNew->equipoA_id = $dato[$i];
@@ -115,7 +214,6 @@ class PartidoController extends Controller
         $campeonato = campeonato::pluck('nombre', 'id');
         $equipo = equipoClub::pluck('name', 'id');
         return view('partidos.index', compact('partidos', 'campeonato', 'equipo', 'id'));
-
     }
 
     public function generarVar($id)
@@ -124,13 +222,12 @@ class PartidoController extends Controller
         $Inscrip = Inscripcion::select('equipo_id')->where('campeonato_id', $id)->get();
 
         $dato = array();
-        foreach ($Inscrip as $i =>$Equipo_id) {
+        foreach ($Inscrip as $i => $Equipo_id) {
             $dato[$i] = $Equipo_id->equipo_id;
-
         }
 
-        for ($i=0; $i <= sizeof($dato)-1; $i++) {
-            for ($j=$i+1; $j <= sizeof($dato)-1; $j++) {
+        for ($i = 0; $i <= sizeof($dato) - 1; $i++) {
+            for ($j = $i + 1; $j <= sizeof($dato) - 1; $j++) {
                 $partidoNew = new partido();
                 $partidoNew->campeonato_id = $id;
                 $partidoNew->equipoA_id = $dato[$i];
@@ -148,36 +245,34 @@ class PartidoController extends Controller
         $campeonato = campeonato::pluck('nombre', 'id');
         $equipo = equipoClub::pluck('name', 'id');
         return view('partidos.index', compact('partidos', 'campeonato', 'equipo', 'id'));
-
     }
 
-    function buscarpartido(Request $request){
+    function buscarpartido(Request $request)
+    {
         $id = $request->campeonato_id;
-        $partidos = partido::where('campeonato_id','LIKE', $id)
-        ->orderBy("fecha_Par", "desc")->get();
+        $partidos = partido::where('campeonato_id', 'LIKE', $id)
+            ->orderBy("fecha_Par", "desc")->get();
         $campeonato = campeonato::pluck('nombre', 'id');
         $equipo = equipoClub::pluck('name', 'id');
         return view('partidos.index', compact('partidos', 'campeonato', 'equipo', 'id'));
     }
     public function generarterceros($id)
     {
-        partido::where('campeonato_id','LIKE', $id)->where('tipo', 'like', '3')->delete();
+        partido::where('campeonato_id', 'LIKE', $id)->where('tipo', 'like', '3')->delete();
         $posiciones = TablaPosicion::all()->sortByDesc('puntos')->sortByDesc('Gd');
 
-
-
-        $p1 = TablaPosicion::where('campeonato_id','LIKE', $id)
-        ->orderBy("puntos","desc")->orderBy("Gd","desc")->skip(0)->take(1)->first();
-        $p2 = TablaPosicion::where('campeonato_id','LIKE', $id)
-        ->orderBy("puntos","desc")->orderBy("Gd","desc")->skip(1)->take(1)->first();
-        $p3 = TablaPosicion::where('campeonato_id','LIKE', $id)
-        ->orderBy("puntos","desc")->orderBy("Gd","desc")->skip(2)->take(1)->first();
-        $p4 = TablaPosicion::where('campeonato_id','LIKE', $id)
-        ->orderBy("puntos","desc")->orderBy("Gd","desc")->skip(3)->take(1)->first();
-        $p5 = TablaPosicion::where('campeonato_id','LIKE', $id)
-        ->orderBy("puntos","desc")->orderBy("Gd","desc")->skip(4)->take(1)->first();
-        $p6 = TablaPosicion::where('campeonato_id','LIKE', $id)
-        ->orderBy("puntos","desc")->orderBy("Gd","desc")->skip(5)->take(1)->first();
+        $p1 = TablaPosicion::where('campeonato_id', 'LIKE', $id)
+            ->orderBy("puntos", "desc")->orderBy("Gd", "desc")->skip(0)->take(1)->first();
+        $p2 = TablaPosicion::where('campeonato_id', 'LIKE', $id)
+            ->orderBy("puntos", "desc")->orderBy("Gd", "desc")->skip(1)->take(1)->first();
+        $p3 = TablaPosicion::where('campeonato_id', 'LIKE', $id)
+            ->orderBy("puntos", "desc")->orderBy("Gd", "desc")->skip(2)->take(1)->first();
+        $p4 = TablaPosicion::where('campeonato_id', 'LIKE', $id)
+            ->orderBy("puntos", "desc")->orderBy("Gd", "desc")->skip(3)->take(1)->first();
+        $p5 = TablaPosicion::where('campeonato_id', 'LIKE', $id)
+            ->orderBy("puntos", "desc")->orderBy("Gd", "desc")->skip(4)->take(1)->first();
+        $p6 = TablaPosicion::where('campeonato_id', 'LIKE', $id)
+            ->orderBy("puntos", "desc")->orderBy("Gd", "desc")->skip(5)->take(1)->first();
 
         $Part1 = new partido();
         $Part1->campeonato_id = $id;
@@ -208,10 +303,10 @@ class PartidoController extends Controller
     }
     public function semifinal($id)
     {
-        partido::where('campeonato_id','LIKE', $id)->where('tipo', 'like', '2')->delete();
-        $partidosg1 = partido::where('campeonato_id','LIKE', $id)->where('tipo', 'like', '3')->skip(0)->take(1)->first();
-        $partidosg2 = partido::where('campeonato_id','LIKE', $id)->where('tipo', 'like', '3')->skip(1)->take(1)->first();
-        $partidosg3 = partido::where('campeonato_id','LIKE', $id)->where('tipo', 'like', '3')->skip(2)->take(1)->first();
+        partido::where('campeonato_id', 'LIKE', $id)->where('tipo', 'like', '2')->delete();
+        $partidosg1 = partido::where('campeonato_id', 'LIKE', $id)->where('tipo', 'like', '3')->skip(0)->take(1)->first();
+        $partidosg2 = partido::where('campeonato_id', 'LIKE', $id)->where('tipo', 'like', '3')->skip(1)->take(1)->first();
+        $partidosg3 = partido::where('campeonato_id', 'LIKE', $id)->where('tipo', 'like', '3')->skip(2)->take(1)->first();
 
         $Part1 = new partido();
         $Part1->campeonato_id = $id;
@@ -232,8 +327,7 @@ class PartidoController extends Controller
                 $perdedor2 = $partidosg2->equipoA_id;
                 $gd2 = $partidosg2->gol_equipoA - $partidosg2->gol_equipoB;
             }
-
-        } else{
+        } else {
             if ($partidosg2->gol_equipoA > $partidosg2->gol_equipoB) {
                 $Part1->equipoA_id = $partidosg1->equipoB_id;
                 $Part1->equipoB_id = $partidosg2->equipoA_id;
@@ -241,7 +335,6 @@ class PartidoController extends Controller
                 $gd1 = $partidosg1->gol_equipoA - $partidosg1->gol_equipoB;
                 $perdedor2 = $partidosg2->equipoB_id;
                 $gd2 = $partidosg2->gol_equipoB - $partidosg2->gol_equipoA;
-
             } else {
                 $Part1->equipoA_id = $partidosg1->equipoB_id;
                 $Part1->equipoB_id = $partidosg2->equipoB_id;
@@ -264,8 +357,8 @@ class PartidoController extends Controller
             $perdedor3 = $partidosg3->equipoA_id;
             $gd3 = $partidosg3->gol_equipoB - $partidosg3->gol_equipoA;
         }
-        if ($gd1>$gd2) {
-            if ($gd1>$gd3) {
+        if ($gd1 > $gd2) {
+            if ($gd1 > $gd3) {
                 if ($partidosg3->gol_equipoA > $partidosg3->gol_equipoB) {
                     $Part2->equipoA_id = $partidosg3->equipoA_id;
                     $Part2->equipoB_id = $perdedor1;
@@ -282,8 +375,8 @@ class PartidoController extends Controller
                     $Part2->equipoB_id = $perdedor3;
                 }
             }
-        }else {
-            if ($gd2>$gd3) {
+        } else {
+            if ($gd2 > $gd3) {
                 if ($partidosg3->gol_equipoA > $partidosg3->gol_equipoB) {
                     $Part2->equipoA_id = $partidosg3->equipoA_id;
                     $Part2->equipoB_id = $perdedor2;
@@ -312,9 +405,9 @@ class PartidoController extends Controller
     }
     public function final($id)
     {
-        partido::where('campeonato_id','LIKE', $id)->where('tipo', 'like', '0')->delete();
-        $partidosg1 = partido::where('campeonato_id','LIKE', $id)->where('tipo', 'like', '2')->skip(0)->take(1)->first();
-        $partidosg2 = partido::where('campeonato_id','LIKE', $id)->where('tipo', 'like', '2')->skip(1)->take(1)->first();
+        partido::where('campeonato_id', 'LIKE', $id)->where('tipo', 'like', '0')->delete();
+        $partidosg1 = partido::where('campeonato_id', 'LIKE', $id)->where('tipo', 'like', '2')->skip(0)->take(1)->first();
+        $partidosg2 = partido::where('campeonato_id', 'LIKE', $id)->where('tipo', 'like', '2')->skip(1)->take(1)->first();
 
         $Part1 = new partido();
         $Part1->campeonato_id = $id;
@@ -334,8 +427,7 @@ class PartidoController extends Controller
                 $perdedor2 = $partidosg2->equipoA_id;
                 $gd2 = $partidosg2->gol_equipoA - $partidosg2->gol_equipoB;
             }
-
-        } else{
+        } else {
             if ($partidosg2->gol_equipoA > $partidosg2->gol_equipoB) {
                 $Part1->equipoA_id = $partidosg1->equipoB_id;
                 $Part1->equipoB_id = $partidosg2->equipoA_id;
@@ -343,7 +435,6 @@ class PartidoController extends Controller
                 $gd1 = $partidosg1->gol_equipoA - $partidosg1->gol_equipoB;
                 $perdedor2 = $partidosg2->equipoB_id;
                 $gd2 = $partidosg2->gol_equipoB - $partidosg2->gol_equipoA;
-
             } else {
                 $Part1->equipoA_id = $partidosg1->equipoB_id;
                 $Part1->equipoB_id = $partidosg2->equipoB_id;
@@ -353,6 +444,7 @@ class PartidoController extends Controller
                 $gd2 = $partidosg2->gol_equipoA - $partidosg2->gol_equipoB;
             }
         }
+
         $Part1->tipo = 0;
         $Part1->save();
 
@@ -365,7 +457,7 @@ class PartidoController extends Controller
     public function destroy($id)
     {
         partido::find($id)->delete();
-        $id= 0;
+        $id = 0;
         $partidos = partido::all()->sortByDesc("fecha_Par");
         $campeonato = campeonato::pluck('nombre', 'id');
         $equipo = equipoClub::pluck('name', 'id');
@@ -379,24 +471,18 @@ class PartidoController extends Controller
         $campeonato = campeonato::pluck('nombre', 'id');
         $equipo = equipoClub::pluck('name', 'id');
         $Inscrip = Inscripcion::where('campeonato_id', $idf)->get();
-        $partido = partido::where('campeonato_id','LIKE', $idf)->where('tipo', 'like', '0')->first();
-        echo $partido."<br>";
+        $partido = partido::where('campeonato_id', 'LIKE', $idf)->where('tipo', 'like', '0')->first();
+        echo $partido . "<br>";
         if ($partido->gol_equipoA > $partido->gol_equipoB) {
             $pfinal = $partido->equipoA_id;
-
         } else {
             $pfinal = $partido->equipoB_id;
-
         }
 
-        view()->share('partidos.pdf',$Inscrip, $campeonato, $equipo, $idf, $pfinal, $partido);
+        view()->share('partidos.pdf', $Inscrip, $campeonato, $equipo, $idf, $pfinal, $partido);
 
-        $pdf = PDF::loadView('partidos.pdf', ['Inscrip'=>$Inscrip, 'campeonato'=>$campeonato, 'equipo'=>$equipo, 'idf'=>$idf, 'pfinal'=>$pfinal, 'partido'=>$partido]);
+        $pdf = PDF::loadView('partidos.pdf', ['Inscrip' => $Inscrip, 'campeonato' => $campeonato, 'equipo' => $equipo, 'idf' => $idf, 'pfinal' => $pfinal, 'partido' => $partido]);
 
-        return $pdf->stream('Report_'.$campeonato[$idf].'.pdf');
+        return $pdf->stream('Report_' . $campeonato[$idf] . '.pdf');
     }
-
-
-
-
 }

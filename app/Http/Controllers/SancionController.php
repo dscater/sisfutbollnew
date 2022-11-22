@@ -21,14 +21,11 @@ class SancionController extends Controller
         $this->validate($request, [
             'nombre' => 'required',
             'detalle'=> 'required',
-
-
         ]);
         $input=$request->all();
         $doc = sancion::create([
             'nombre' => $input['nombre'],
             'detalle'=> $input['detalle'],
-
         ]);
 
 
@@ -43,10 +40,9 @@ class SancionController extends Controller
     {
         $this->validate($request, [
             'nombre' => 'required',
-            'detalle' => 'required',
-
-
+            'detalle'=> 'required',
         ]);
+        
         $input=$request->all();
         $campeonato = sancion::find($id);
         $campeonato->update($input);

@@ -9,10 +9,12 @@
                 <div class="col-12">
                     <div class="card shadow">
                         <div class="card-header">
-                            <a class="btn btn-warning" href="{{ route('inscripcion.create', $id) }}">Inscribir equipo</a><br>
+                            <a class="btn btn-warning" href="{{ route('inscripcion.create', $id) }}">Inscribir equipo</a>
+                        </div>
+                        <div class="card-body">
                             <h4>Partidos Eliminatoria Todos vs Todos (TvsT): {{ $comb }}</h4>
-                            <h4>Partidos Eliminatoria Ida y Vuelta (I y V): {{ $comb*2 }}</h4>
-                            <table class="table table-striped mt-1">
+                            <h4>Partidos Eliminatoria Ida y Vuelta (I y V): {{ $comb * 2 }}</h4>
+                            <table class="table table-striped mt-1 data-table">
                                 <thead style="background-color:#6777ef">
                                     <th style="color:#fff;">Nro</th>
                                     <th style="color:#fff;">Campeonato</th>
@@ -23,7 +25,7 @@
                                 </thead>
                                 <tbody>
                                     @php
-                                        $i=0;
+                                        $i = 0;
                                     @endphp
                                     @foreach ($inscrip as $inscri)
                                         <tr>
@@ -35,8 +37,12 @@
 
                                             <td>
 
-                                                {!! Form::open(['method' => 'DELETE','route' => ['inscripcion.destroy', $inscri->id],'style'=>'display:inline']) !!}
-                                                    {!! Form::submit('Borrar', ['class' => 'btn btn-danger']) !!}
+                                                {!! Form::open([
+                                                    'method' => 'DELETE',
+                                                    'route' => ['inscripcion.destroy', $inscri->id],
+                                                    'style' => 'display:inline',
+                                                ]) !!}
+                                                {!! Form::submit('Borrar', ['class' => 'btn btn-danger']) !!}
                                                 {!! Form::close() !!}
                                             </td>
                                         </tr>
@@ -51,5 +57,23 @@
         </div>
 
     </div>
-
+@endsection
+@section('third_party_scripts')
+    <script>
+        $('table.data-table').DataTable({
+            columns: [
+                null,
+                null,
+                null,
+                null,
+                null,
+                {
+                    width: "10%"
+                },
+            ],
+            scrollCollapse: true,
+            language: lenguaje,
+            pageLength: 25
+        });
+    </script>
 @endsection

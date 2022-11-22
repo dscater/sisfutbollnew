@@ -10,4 +10,9 @@ class TablaPosicion extends Model
     use HasFactory;
 
     protected $fillable = ['campeonato_id', 'equipo_id', 'walkover', 'puntos', 'Pj', 'Pp', 'Pe', 'Gf', 'Gc', 'Gd'];
+
+    public function equipo()
+    {
+        return $this->belongsTo(equipoClub::class, 'equipo_id');
+    }
 }

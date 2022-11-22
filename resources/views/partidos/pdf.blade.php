@@ -5,7 +5,8 @@
     <title>SisFut</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <style>
         table {
             font-size: 12px;
@@ -25,7 +26,7 @@
             <p class="text-success text-center"> Telefonos 2380996 - 2394015</p>
         </div>
 
-        <h5 class=" font-weight-bold center ">Reporte de:  {{ $campeonato[$idf] }}</h5>
+        <h5 class=" font-weight-bold center ">Reporte de: {{ $campeonato[$idf] }}</h5>
         <table class="table table-bordered mt-5">
             <thead style="background-color:#6777ef">
                 <th style="color:#fff;">Nro</th>
@@ -39,16 +40,19 @@
                     $i = 0;
                 @endphp
                 @forelse ($Inscrip as $filla)
-                <tr>
-                    <td>{{ ++$i}}</td>
-                    <td>{{ $campeonato[$filla->campeonato_id] }}</td>
-                    <td>{{ $equipo[$filla->equipo_id] }}</td>
-                    @if ($filla->equipo_id === $pfinal)
-                        <td><h4 class="text-success">Ganador</h4></td>
-                    @endif
-                </tr>
+                    <tr>
+                        <td>{{ ++$i }}</td>
+                        <td>{{ $campeonato[$filla->campeonato_id] }}</td>
+                        <td>{{ $equipo[$filla->equipo_id] }}</td>
+                        @if ($filla->equipo_id === $pfinal)
+                            <td>
+                                <h4 class="text-success">Ganador</h4>
+                            </td>
+                        @else
+                            <td></td>
+                        @endif
+                    </tr>
                 @empty
-
                 @endforelse
             </tbody>
         </table>
