@@ -7,13 +7,14 @@ use App\Http\Controllers\EquipoClubController;
 use App\Http\Controllers\FixtureFinalController;
 use App\Http\Controllers\InscripcionController;
 use App\Http\Controllers\JugadorController;
+use App\Http\Controllers\JugadorEquipoController;
 use App\Http\Controllers\PartidoController;
 use App\Http\Controllers\PuntosPartidoController;
 use App\Http\Controllers\TablaPosicionController;
 use App\Http\Controllers\NoticiaController;
+use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\SancionController;
-use App\Models\fixture;
-use App\Models\TablaPosicion;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,6 +36,7 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+Route::get('campeonato/get/equipos_campeonato', [CampeonatoController::class, 'equipos_campeonato'])->name('equipos_campeonato');
 Route::get('campeonato', [CampeonatoController::class, 'index'])->name('campeonato.index');
 Route::get('campeonato/create', [CampeonatoController::class, 'create'])->name('campeonato.create');
 Route::delete('campeonato/{id}', [CampeonatoController::class, 'destroy'])->name('campeonato.destroy');
@@ -42,6 +44,7 @@ Route::post('campeonato', [CampeonatoController::class, 'store'])->name('campeon
 Route::get('campeonato/editar/{id}', [CampeonatoController::class, 'edit'])->name('campeonato.edit');
 Route::patch('campeonato/{id}', [CampeonatoController::class, 'update'])->name('campeonato.patch');
 Route::put('campeonato/{id}', [CampeonatoController::class, 'update'])->name('campeonato.update');
+
 
 Route::get('equipos', [EquipoClubController::class, 'index'])->name('equipos.index');
 Route::get('equipos/create', [EquipoClubController::class, 'create'])->name('equipos.create');
@@ -58,6 +61,14 @@ Route::post('jugadores', [JugadorController::class, 'store'])->name('jugadores.s
 Route::get('jugadores/editar/{id}', [JugadorController::class, 'edit'])->name('jugadores.edit');
 Route::patch('jugadores/{id}', [JugadorController::class, 'update'])->name('jugadores.patch');
 Route::put('jugadores/{id}', [JugadorController::class, 'update'])->name('jugadores.update');
+
+// JUGADORES EQUIPOS
+Route::get('jugadores/equipos/{jugador}', [JugadorEquipoController::class, 'index'])->name('jugador_equipos.index');
+Route::get('jugadores/equipos/create/{jugador}', [JugadorEquipoController::class, 'create'])->name('jugador_equipos.create');
+Route::post('jugadores/equipos/store', [JugadorEquipoController::class, 'store'])->name('jugador_equipos.store');
+Route::get('jugadores/equipos/edit/{jugador_equipo}', [JugadorEquipoController::class, 'edit'])->name('jugador_equipos.edit');
+Route::put('jugadores/equipos/update/{jugador_equipo}', [JugadorEquipoController::class, 'update'])->name('jugador_equipos.update');
+Route::delete('jugadores/equipos/destroy/{jugador_equipo}', [JugadorEquipoController::class, 'destroy'])->name('jugador_equipos.destroy');
 
 Route::get('inscripcion/{id}', [InscripcionController::class, 'index'])->name('inscripcion.index');
 Route::get('inscripcion/create/{id}', [InscripcionController::class, 'create'])->name('inscripcion.create');
@@ -76,13 +87,18 @@ Route::patch('partidos/{id}', [PartidoController::class, 'update'])->name('parti
 Route::put('partidos/{id}', [PartidoController::class, 'update'])->name('partidos.update');
 
 Route::get('partidos/generar/{id}', [PartidoController::class, 'generar'])->name('partidos.generar');
+Route::get('partidos/generar_segunda_ronda/{id}', [PartidoController::class, 'generar_segunda_ronda'])->name('partidos.generar_segunda_ronda');
 Route::get('partidos/generarVar/{id}', [PartidoController::class, 'generarVar'])->name('partidos.generarVar');
 Route::get('partidos/buscar', [PartidoController::class, 'buscarpartido'])->name('partidos.buscar');
 Route::get('partido/punto/{id}', [PuntosPartidoController::class, 'create'])->name('puntos.create');
 Route::get('partido/generarter/{id}', [PartidoController::class, 'generarterceros'])->name('partidos.generarter');
+Route::get('partido/generar_cuartos/{id}', [PartidoController::class, 'generar_cuartos'])->name('partidos.generar_cuartos');
 Route::get('partido/semifinal/{id}', [PartidoController::class, 'semifinal'])->name('partidos.semifinal');
 Route::get('partido/final/{id}', [PartidoController::class, 'final'])->name('partidos.final');
 
+
+Route::get('tabposicion/listado', [TablaPosicionController::class, 'listado'])->name('tabposicion.listado');
+Route::get('tabposicion/listado/getTablasCampeonato', [TablaPosicionController::class, 'getTablasCampeonato'])->name('tabposicion.getTablasCampeonato');
 Route::get('tabposicion/{campeonato}', [TablaPosicionController::class, 'detalle'])->name('tabposicion.detalle');
 Route::get('tabposicion', [TablaPosicionController::class, 'index'])->name('tabposicion.index');
 Route::get('tabposicion/create', [TablaPosicionController::class, 'create'])->name('tabposicion.create');
@@ -128,3 +144,23 @@ Route::get('download-pdf/{idf}', [TablaPosicionController::class, 'downloadPdf']
 Route::get('partido/download-pdf/{idf}', [PartidoController::class, 'downloadPdf'])->name('partidodownload-pdf');
 
 Route::resource('categorias', CategoriaController::class);
+
+Route::resource('users', UserController::class);
+
+Route::get("reportes/tarjeta_jugador", [ReporteController::class, 'tarjeta_jugador'])->name("reportes.tarjeta_jugador");
+Route::get("reportes/tarjeta_jugador_pdf", [ReporteController::class, 'tarjeta_jugador_pdf'])->name("reportes.tarjeta_jugador_pdf");
+
+Route::get("reportes/jugador", [ReporteController::class, 'jugador'])->name("reportes.jugador");
+Route::get("reportes/jugador_pdf", [ReporteController::class, 'jugador_pdf'])->name("reportes.jugador_pdf");
+
+Route::get("reportes/equipos_categoria", [ReporteController::class, 'equipos_categoria'])->name("reportes.equipos_categoria");
+Route::get("reportes/equipos_categoria_pdf", [ReporteController::class, 'equipos_categoria_pdf'])->name("reportes.equipos_categoria_pdf");
+
+Route::get("reportes/fixture", [ReporteController::class, 'fixture'])->name("reportes.fixture");
+Route::get("reportes/fixture_pdf", [ReporteController::class, 'fixture_pdf'])->name("reportes.fixture_pdf");
+
+Route::get("reportes/jugadores_equipo", [ReporteController::class, 'jugadores_equipo'])->name("reportes.jugadores_equipo");
+Route::get("reportes/jugadores_equipo_pdf", [ReporteController::class, 'jugadores_equipo_pdf'])->name("reportes.jugadores_equipo_pdf");
+
+Route::get("reportes/sanciones", [ReporteController::class, 'sanciones'])->name("reportes.sanciones");
+Route::get("reportes/sanciones_pdf", [ReporteController::class, 'sanciones_pdf'])->name("reportes.sanciones_pdf");

@@ -21,21 +21,9 @@
                             </div>
                         @endif
 
-                        {!! Form::open(array('route' => ['sanciones.update',$id],'method'=>'PATCH')) !!}
+                        {!! Form::model($sancion,array('route' => ['sanciones.update',$sancion->id],'method'=>'PATCH')) !!}
                         <div class="box-body">
-
-                            <div class="form-group">
-                                {{ Form::label('nombre') }}
-                                {{ Form::text('nombre', $sanciones->nombre, ['class' => 'form-control' . ($errors->has('nombre') ? ' is-invalid' : ''), 'placeholder' => 'Nombre']) }}
-                                {!! $errors->first('nombre', '<div class="invalid-feedback">:message</div>') !!}
-                            </div>
-                            <div class="form-group">
-                                {{ Form::label('detalle') }}
-                                {{ Form::text('detalle', $sanciones->detalle, ['class' => 'form-control' . ($errors->has('detalle') ? ' is-invalid' : ''), 'placeholder' => 'detalle']) }}
-                                {!! $errors->first('detalle', '<div class="invalid-feedback">:message</div>') !!}
-                            </div>
-
-
+                            @include("sanciones.form")
                         </div>
                         <div class="box-footer mt20">
                             <button type="submit" class="btn btn-primary">Editar</button>

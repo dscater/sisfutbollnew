@@ -13,10 +13,10 @@ class Inscripcion extends Model
 
     public function campeonatos()
     {
-        return $this->belongsToMany(campeonato::class);
+        return $this->belongsTo(campeonato::class, 'campeonato_id');
     }
     public function equipoClubs()
     {
-        return $this->belongsToMany(equipoClub::class);
+        return $this->belongsTo(equipoClub::class, 'equipo_id');
     }
 }

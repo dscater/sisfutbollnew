@@ -48,7 +48,8 @@
                                                 ]) !!}
                                                 {!! Form::submit('Borrar', ['class' => 'btn btn-danger btn-block mb-1']) !!}
                                                 {!! Form::close() !!}
-
+                                                <a class="btn btn-success btn-block mb-1"
+                                                href="{{ route('jugador_equipos.index', $jugador->id) }}">Equipos</a>
                                             </td>
                                         </tr>
                                     @endforeach

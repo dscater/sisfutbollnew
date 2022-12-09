@@ -12,8 +12,45 @@
                             <a class="btn btn-warning" href="{{ route('inscripcion.create', $id) }}">Inscribir equipo</a>
                         </div>
                         <div class="card-body">
-                            <h4>Partidos Eliminatoria Todos vs Todos (TvsT): {{ $comb }}</h4>
-                            <h4>Partidos Eliminatoria Ida y Vuelta (I y V): {{ $comb * 2 }}</h4>
+                            {{-- <div class="row">
+                                <div class="col-md-12">
+                                    <h4>Partidos Eliminatoria Todos vs Todos (TvsT): {{ $comb }}</h4>
+                                    <h4>Partidos Eliminatoria Ida y Vuelta (I y V): {{ $comb * 2 }}</h4>
+                                </div>
+                            </div> --}}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <a class="btn btn-success mb-1 btn-block"
+                                        href="{{ route('partidos.generar', $id) }}?sw=tt">Generar Todos vs Todos</a>
+                                </div>
+                                <div class="col-md-6">
+                                    <a class="btn btn-success mb-1 btn-block"
+                                        href="{{ route('partidos.generar', $id) }}?sw=iv">Generar Ida y Vuelta</a>
+                                </div>
+                            </div>
+                            @if (session('info'))
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="alert alert-warning">
+                                            <button class="close" data-dismiss="alert">&times;</button>
+                                            <strong><i class="fa fa-exclamation-triangle"></i>
+                                                {{ session('info') }}</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+                            @if (session('bien'))
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="alert alert-success">
+                                            <button class="close" data-dismiss="alert">&times;</button>
+                                            <strong><i class="fa fa-check-circle"></i>
+                                                {{ session('bien') }}</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+
                             <table class="table table-striped mt-1 data-table">
                                 <thead style="background-color:#6777ef">
                                     <th style="color:#fff;">Nro</th>

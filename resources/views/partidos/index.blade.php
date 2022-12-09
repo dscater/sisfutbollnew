@@ -42,6 +42,7 @@
                                     <th style="color:#fff;">Goles A</th>
                                     <th style="color:#fff;">Equipo B</th>
                                     <th style="color:#fff;">Goles B</th>
+                                    <th style="color:#fff;">Grupo</th>
                                     <th style="color:#fff;">Fecha</th>
                                     <th style="color:#fff;">Hora</th>
                                     <th style="color:#fff;">Estado</th>
@@ -80,6 +81,7 @@
                                                     @endif
                                                 @endif
                                             </td>
+                                            <td>{{ $partido->grupo }}</td>
                                             <td>{{ $partido->fecha_Par }}</td>
                                             <td>{{ $partido->hora }}</td>
                                             <td>
@@ -136,6 +138,7 @@
     <script>
         $('table.data-table').DataTable({
             columns: [
+                null,
                 null,
                 null,
                 null,

@@ -9,7 +9,11 @@ class partido extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['id', 'categoria_id'];
+    protected $fillable = [
+        'campeonato_id', 'equipoA_id', 'equipoB_id',
+        'gol_equipoA', 'gol_equipoB', 'fecha_Par', 'hora',
+        'walkover', 'detalle', 'grupo', 'estado', 'tipo'
+    ];
 
     public function campeonatos()
     {
@@ -28,5 +32,4 @@ class partido extends Model
     {
         return $this->belongsToMany(FacturaFinal::class);
     }
-
 }

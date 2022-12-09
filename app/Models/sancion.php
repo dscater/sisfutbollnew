@@ -9,5 +9,10 @@ class sancion extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nombre','detalle'];
+    protected $fillable = ['jugador_id', 'tarjeta'];
+
+    public function jugador()
+    {
+        return $this->belongsTo(Jugador::class, 'jugador_id');
+    }
 }

@@ -13,7 +13,6 @@ class PuntosPartido extends Model
         "campeonato_id", "equipo_id", "partido_id", "walkover", "puntos", "Pj", "Pg", "Pp", "Pe", "Gf", "Gc", "GD",
     ];
 
-
     public function campeonatos()
     {
         return $this->belongsToMany(campeonato::class);

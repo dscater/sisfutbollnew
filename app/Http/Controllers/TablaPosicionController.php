@@ -20,6 +20,16 @@ class TablaPosicionController extends Controller
         return view('tabposicion.index', compact('campeonatos'));
     }
 
+    public function listado()
+    {
+        $campeonatos = campeonato::all();
+        $array_campeonatos[""] = "Seleccione campeonato";
+        foreach ($campeonatos as $value) {
+            $array_campeonatos[$value->id] = $value->nombre;
+        }
+        return view("tabposicion.listado", compact("array_campeonatos"));
+    }
+
     public function buscarcamp(Request $request)
     {
         $id = $request->campeonato_id;
@@ -50,15 +60,20 @@ class TablaPosicionController extends Controller
                 ]);
             }
         }
-        $posiciones = TablaPosicion::where('campeonato_id', $id)->orderBy("puntos", "desc")->orderBy("Gd", "desc")->get()();
+        $posiciones = TablaPosicion::where('campeonato_id', $id)->orderBy("puntos", "desc")->orderBy("GD", "desc")->get()();
         return view('tabposicion.index', compact('posiciones'));
     }
 
-    public static function actualizar_posiciones_campeonato($id, $equipoA, $equipoB)
+    public static function actualizar_posiciones_campeonato($id, $equipoA, $equipoB, $grupo = NULL)
     {
         $equipos = Inscripcion::where("campeonato_id", $id)->whereIn("equipo_id", [$equipoA, $equipoB])->get();
         foreach ($equipos as $equipo) {
             $existe_posicion = TablaPosicion::where('campeonato_id', $id)->where("equipo_id", $equipo->equipo_id)->get()->first();
+            if ($grupo != NULL) {
+                $existe_posicion = TablaPosicion::where('campeonato_id', $id)->where("equipo_id", $equipo->equipo_id)->where("grupo", $grupo)->get()->first();
+            } else {
+                $existe_posicion = TablaPosicion::where('campeonato_id', $id)->where("equipo_id", $equipo->equipo_id)->get()->first();
+            }
             if (!$existe_posicion) {
                 $existe_posicion = TablaPosicion::create([
                     "campeonato_id" => $id,
@@ -73,7 +88,9 @@ class TablaPosicionController extends Controller
                     "Gd" => 0,
                 ]);
             }
-
+            if ($grupo != NULL) {
+                $existe_posicion->grupo = $grupo;
+            }
             // verificar cantidad partidos
             $partidos = PuntosPartido::where("campeonato_id", $id)->where("equipo_id", $equipo->equipo_id)->get();
             $existe_posicion->pj = count($partidos);
@@ -127,7 +144,79 @@ class TablaPosicionController extends Controller
     public function detalle(campeonato $campeonato)
     {
         // return $campeonato;
-        $posiciones = TablaPosicion::where("campeonato_id", $campeonato->id)->orderBy("puntos", "desc")->orderBy("GD", "asc")->get();
-        return view("tabposicion.detalle", compact("campeonato", "posiciones"));
+        $posiciones = TablaPosicion::where("campeonato_id", $campeonato->id)->orderBy("puntos", "desc")->orderBy("GD", "desc")->get();
+        $grupos = [];
+        $grupos_clasificados = [];
+        if ($campeonato->serie == 'SERIE 2') {
+            $grupos = ["A", "B"];
+            $posiciones = [];
+            foreach ($grupos as $grupo) {
+                $posiciones[$grupo] = TablaPosicion::where("campeonato_id", $campeonato->id)->where("grupo", $grupo)->orderBy("puntos", "desc")->orderBy("GD", "desc")->get();
+            }
+        }
+        if ($campeonato->serie == 'SERIE 3') {
+            $grupos = ["A", "B", "C"];
+            $posiciones = [];
+            foreach ($grupos as $grupo) {
+                $posiciones[$grupo] = TablaPosicion::where("campeonato_id", $campeonato->id)->where("grupo", $grupo)->orderBy("puntos", "desc")->orderBy("GD", "desc")->get();
+            }
+        }
+        if ($campeonato->serie == 'SERIE 6') {
+            $grupos = ["A", "B", "C", "D", "E", "F"];
+            $posiciones = [];
+            foreach ($grupos as $grupo) {
+                $posiciones[$grupo] = TablaPosicion::where("campeonato_id", $campeonato->id)->where("grupo", $grupo)->orderBy("puntos", "desc")->orderBy("GD", "desc")->get();
+            }
+
+            $grupos_clasificados = ["1", "2"];
+            foreach ($grupos_clasificados as $grupo) {
+                $posiciones[$grupo] = TablaPosicion::where("campeonato_id", $campeonato->id)->where("grupo", $grupo)->orderBy("puntos", "desc")->orderBy("GD", "desc")->get();
+            }
+        }
+
+        return view("tabposicion.detalle", compact("campeonato", "posiciones", "grupos", "grupos_clasificados"));
+    }
+
+
+    public function getTablasCampeonato(Request $request)
+    {
+        $campeonato = campeonato::find($request->id);
+        // return $campeonato;
+        $posiciones = TablaPosicion::where("campeonato_id", $campeonato->id)->orderBy("puntos", "desc")->orderBy("GD", "desc")->get();
+        $grupos = [];
+        $grupos_clasificados = [];
+        $html = "";
+        $html = view("tabposicion.parcial.serie1", compact("posiciones"))->render();
+        if ($campeonato->serie == 'SERIE 2') {
+            $grupos = ["A", "B"];
+            $posiciones = [];
+            foreach ($grupos as $grupo) {
+                $posiciones[$grupo] = TablaPosicion::where("campeonato_id", $campeonato->id)->where("grupo", $grupo)->orderBy("puntos", "desc")->orderBy("GD", "desc")->get();
+            }
+            $html = view("tabposicion.parcial.serie2", compact("posiciones", "grupos"))->render();
+        }
+        if ($campeonato->serie == 'SERIE 3') {
+            $grupos = ["A", "B", "C"];
+            $posiciones = [];
+            foreach ($grupos as $grupo) {
+                $posiciones[$grupo] = TablaPosicion::where("campeonato_id", $campeonato->id)->where("grupo", $grupo)->orderBy("puntos", "desc")->orderBy("GD", "desc")->get();
+            }
+            $html = view("tabposicion.parcial.serie3", compact("posiciones", "grupos"))->render();
+        }
+        if ($campeonato->serie == 'SERIE 6') {
+            $grupos = ["A", "B", "C", "D", "E", "F"];
+            $posiciones = [];
+            foreach ($grupos as $grupo) {
+                $posiciones[$grupo] = TablaPosicion::where("campeonato_id", $campeonato->id)->where("grupo", $grupo)->orderBy("puntos", "desc")->orderBy("GD", "desc")->get();
+            }
+
+            $grupos_clasificados = ["1", "2"];
+            foreach ($grupos_clasificados as $grupo) {
+                $posiciones[$grupo] = TablaPosicion::where("campeonato_id", $campeonato->id)->where("grupo", $grupo)->orderBy("puntos", "desc")->orderBy("GD", "desc")->get();
+            }
+            $html = view("tabposicion.parcial.serie6", compact("posiciones", "grupos", "grupos_clasificados"))->render();
+        }
+
+        return response()->JSON($html);;
     }
 }

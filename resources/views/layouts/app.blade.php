@@ -15,7 +15,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     @yield('third_party_stylesheets')
@@ -40,16 +40,16 @@
     }
 
     divf {
-        background-image: url('fondo.jpg');
+        background-image: url('{{asset('fondo.jpg')}}');
         background-repeat: no-repeat;
         background-size: 100% 100%;
     }
 </style>
 
 <body class="font-sans antialiased"
-    style="background-image: url('fondo.jpg');background-repeat: no-repeat;background-size: cover;">
+    style="background-image: url('{{asset('fondo.jpg')}}');background-repeat: no-repeat;background-size: cover;">
     <div class="wrapper"
-        style="background-image: url('fondo.jpg');background-repeat: no-repeat;background-size: cover;">
+        style="background-image: url('{{asset('fondo.jpg')}}');background-repeat: no-repeat;background-size: cover;">
         <!-- Main Header -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
             <!-- Left navbar links -->
@@ -99,7 +99,7 @@
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper"
-            style="background-image: url('fondo.jpg');background-repeat: no-repeat;background-size: cover;">
+            style="background-image: url('{{asset('fondo.jpg')}}');background-repeat: no-repeat;background-size: cover;">
             @yield('content')
         </div>
 
@@ -107,7 +107,7 @@
 
     </div>
 
-    <script src="{{ mix('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/app.js') }}" defer></script>
 
     <!-- DataTables -->
     <script src="{{ asset('data-tables/datatables/jquery.dataTables.min.js') }}"></script>

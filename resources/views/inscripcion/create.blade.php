@@ -33,7 +33,8 @@
                             </div>
                             <div class="form-group">
                                 {{ Form::label('equipo_id') }}
-                                {!! Form::select('equipo_id', $equipos,[], array('class' => 'form-control')) !!}
+                                {!! Form::select('equipo_id', $equipos,[], array('class' => 'form-control'. ($errors->has('equipo_id') ? ' is-invalid' : ''))) !!}
+                                {!! $errors->first('equipo_id', '<div class="invalid-feedback">:message</div>') !!}
                             </div>
                             <div class="form-group">
                                 {{ Form::label('observacion') }}

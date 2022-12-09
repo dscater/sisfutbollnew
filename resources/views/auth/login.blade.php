@@ -13,7 +13,7 @@
         integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog=="
         crossorigin="anonymous" />
 
-    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
 </head>
 <style>
@@ -54,7 +54,7 @@
 
                     <div class="input-group mb-3">
                         <input type="email" name="email" value="{{ old('email') }}" placeholder="Correo"
-                            class="form-control @error('email') is-invalid @enderror">
+                            class="form-control @error('email') is-invalid @enderror" autofocus>
                         <div class="input-group-append">
                             <div class="input-group-text"><span class="fas fa-envelope"></span></div>
                         </div>
@@ -84,7 +84,7 @@
                     </div>
                 </form>
 
-                <a href="{{ route('register') }}" class="text-center d-block text-left mt-2 mb-0">Regitrarse</a>
+                {{-- <a href="{{ route('register') }}" class="text-center d-block text-left mt-2 mb-0">Regitrarse</a> --}}
             </div>
             <!-- /.login-card-body -->
         </div>
@@ -92,7 +92,7 @@
     </div>
     <!-- /.login-box -->
 
-    <script src="{{ mix('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/app.js') }}" defer></script>
 
 </body>
 

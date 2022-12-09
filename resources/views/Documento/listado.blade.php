@@ -397,7 +397,7 @@
         }
 
         div.fondo {
-            background-image: url('/fondo.jpg');
+            background-image: url('{{asset('fondo.jpg')}}');
             background-repeat: no-repeat;
             background-size: 100% 100%;
         }
@@ -416,10 +416,10 @@
                     <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">
                         <span style="color:white">Iniciar sesión</span></a>
 
-                    @if (Route::has('register'))
+                    {{-- @if (Route::has('register'))
                         <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">
                             <span style="color:white">Registrarse</span></a>
-                    @endif
+                    @endif --}}
                 @endauth
             </div>
         @endif

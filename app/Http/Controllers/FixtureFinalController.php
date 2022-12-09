@@ -26,7 +26,6 @@ class FixtureFinalController extends Controller
         $partido4 = partido::where('campeonato_id', 'LIKE', $id)->where('tipo', 'LIKE', '2')->skip(0)->take(1)->first();
         $partido5 = partido::where('campeonato_id', 'LIKE', $id)->where('tipo', 'LIKE', '2')->skip(1)->take(1)->first();
         $partido6 = partido::where('campeonato_id', 'LIKE', $id)->where('tipo', 'LIKE', '0')->skip(0)->take(1)->first();
-        echo $partido1;
         return view('fixturefinal.index', compact(
             'campeonato',
             'equipo',
@@ -46,6 +45,7 @@ class FixtureFinalController extends Controller
         $id = $request->campeonato_id;
         //echo $id."<br>";
 
+        $o_campeonato = campeonato::find($id);
         $campeonato = campeonato::pluck('nombre', 'id');
         $equipo = equipoClub::pluck('name', 'id');
         /**  TIPOS
@@ -53,19 +53,26 @@ class FixtureFinalController extends Controller
          *  1: clasificatoria
          *  2: semifinal
          *  3: cuartos
+         *  4: Segunda Ronda (SERIE 6 - 7 equipos por grupo[1,2])
          */
 
-
         $clasificatorias = partido::where('campeonato_id', $id)->where('tipo', '1')->orderBy("fecha_Par", "asc")->get(); // clasificatorias
+        $partidos_terminados_clasificatorias = partido::where('campeonato_id', $id)->where('tipo', '1')->where("estado", 1)->orderBy("fecha_Par", "asc")->get(); // clasificatorias
+        $segunda_clasificatorias = partido::where('campeonato_id', $id)->where('tipo', '4')->orderBy("fecha_Par", "asc")->get(); // clasificatorias
+        $segunda_clasificatorias_terminados = partido::where('campeonato_id', $id)->where('tipo', '4')->where("estado", 1)->orderBy("fecha_Par", "asc")->get(); // clasificatorias
         $cuartos = partido::where('campeonato_id', $id)->where('tipo', '3')->orderBy("fecha_Par", "asc")->get(); // cuartos
         $cuartos_completos = partido::where('campeonato_id', $id)->where('tipo', '3')->where("estado", 1)->get(); // cuartos_completos
         $semifinales = partido::where('campeonato_id', $id)->where('tipo', '2')->orderBy("fecha_Par", "asc")->get(); // semifinal
         $semifinales_completos = partido::where('campeonato_id', $id)->where('tipo', '2')->where("estado", 1)->get(); // semifinales_completos
-        $final = partido::where('campeonato_id', $id)->where('tipo', '0')->orderBy("fecha_Par", "asc")->get()->last(); // final
+        $final = partido::where('campeonato_id', $id)->where('tipo', '0')->get()->last(); // final
         return view('fixturefinal.index', compact(
+            'o_campeonato',
             'campeonato',
             'equipo',
             'clasificatorias',
+            'partidos_terminados_clasificatorias',
+            'segunda_clasificatorias',
+            'segunda_clasificatorias_terminados',
             'cuartos',
             'semifinales',
             'final',

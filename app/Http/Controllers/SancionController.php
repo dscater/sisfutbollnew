@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\jugador;
 use App\Models\sancion;
 use Illuminate\Http\Request;
 
@@ -14,36 +15,45 @@ class SancionController extends Controller
     }
     public function create()
     {
-        return view('sanciones.create');
+        $jugadores = jugador::all();
+        $array_jugadores[""] = "Seleccione...";
+        foreach ($jugadores as $value) {
+            $array_jugadores[$value->id] = $value->full_name;
+        }
+        return view('sanciones.create', compact("array_jugadores"));
     }
     public function store(Request $request)
     {
         $this->validate($request, [
-            'nombre' => 'required',
-            'detalle'=> 'required',
+            'jugador_id' => 'required',
+            'tarjeta' => 'required',
         ]);
-        $input=$request->all();
+        $input = $request->all();
         $doc = sancion::create([
-            'nombre' => $input['nombre'],
-            'detalle'=> $input['detalle'],
+            'jugador_id' => $input['jugador_id'],
+            'tarjeta' => $input['tarjeta'],
         ]);
-
 
         return redirect()->route('sanciones.index');
     }
     public function editar($id)
     {
-        $sanciones = sancion::find($id);
-        return view('sanciones.editar', compact('sanciones', 'id'));
+        $sancion = sancion::find($id);
+        $jugadores = jugador::all();
+        $array_jugadores[""] = "Seleccione...";
+        foreach ($jugadores as $value) {
+            $array_jugadores[$value->id] = $value->full_name;
+        }
+        return view('sanciones.editar', compact('sancion', "array_jugadores"));
     }
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'nombre' => 'required',
-            'detalle'=> 'required',
+            'jugador_id' => 'required',
+            'tarjeta' => 'required',
         ]);
-        
-        $input=$request->all();
+
+        $input = $request->all();
         $campeonato = sancion::find($id);
         $campeonato->update($input);
 
@@ -55,7 +65,5 @@ class SancionController extends Controller
         sancion::find($id)->destroy();
         $sanciones = sancion::all();
         return view('sanciones.index', compact('sanciones'));
-
     }
-
 }

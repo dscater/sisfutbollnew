@@ -141,6 +141,9 @@ return [
 
         'contrasenia' => 'contraseña',
         'name'                  => 'nombre',
+        'jugador_id'                  => 'jugador',
+        'anio'                  => 'año',
+        'equipo_id'                  => 'equipo',
         'nom'                  => 'nombre',
         'apep'                  => 'apellido paterno',
         'apem'                  => 'apellido materno',
