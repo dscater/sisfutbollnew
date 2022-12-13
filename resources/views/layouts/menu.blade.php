@@ -73,20 +73,22 @@
         <p>Tablero de Posiciones</p>
     </a>
 </li>
-<li class="nav-item">
-    <a href="{{ route('categorias.index') }}" class="nav-link {{ request()->is('categorias*') ? 'active' : '' }}"
-        style="color:white;">
-        <i class="nav-icon fas fa-envelope-open-text"></i>
-        <p>Categorias</p>
-    </a>
-</li>
-<li class="nav-item">
-    <a href="{{ route('users.index') }}" class="nav-link {{ request()->is('users*') ? 'active' : '' }}"
-        style="color:white;">
-        <i class="nav-icon fas fa-users"></i>
-        <p>Usuarios</p>
-    </a>
-</li>
+@if (Auth::user()->tipo == 'ADMINISTRADOR')
+    <li class="nav-item">
+        <a href="{{ route('categorias.index') }}" class="nav-link {{ request()->is('categorias*') ? 'active' : '' }}"
+            style="color:white;">
+            <i class="nav-icon fas fa-envelope-open-text"></i>
+            <p>Categorias</p>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="{{ route('users.index') }}" class="nav-link {{ request()->is('users*') ? 'active' : '' }}"
+            style="color:white;">
+            <i class="nav-icon fas fa-users"></i>
+            <p>Usuarios</p>
+        </a>
+    </li>
+@endif
 <li class="nav-header bg-dark">
     REPORTES
 </li>
@@ -98,8 +100,8 @@
     </a>
 </li>
 <li class="nav-item">
-    <a href="{{ route('reportes.jugador') }}"
-        class="nav-link {{ request()->is('reportes/jugador') ? 'active' : '' }}" style="color:white;">
+    <a href="{{ route('reportes.jugador') }}" class="nav-link {{ request()->is('reportes/jugador') ? 'active' : '' }}"
+        style="color:white;">
         <i class="nav-icon fas fa-file-pdf"></i>
         <p>Jugador</p>
     </a>
@@ -112,8 +114,8 @@
     </a>
 </li>
 <li class="nav-item">
-    <a href="{{ route('reportes.fixture') }}"
-        class="nav-link {{ request()->is('reportes/fixture') ? 'active' : '' }}" style="color:white;">
+    <a href="{{ route('reportes.fixture') }}" class="nav-link {{ request()->is('reportes/fixture') ? 'active' : '' }}"
+        style="color:white;">
         <i class="nav-icon fas fa-file-pdf"></i>
         <p>Fixture</p>
     </a>

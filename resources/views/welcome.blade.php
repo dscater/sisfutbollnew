@@ -2058,7 +2058,7 @@
             <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
                 <!--div class="grid grid-cols-1 md:grid-cols2"-->
                 <div class="grid grid-cols-1">
-                    <a href="{{ route('documento.listado') }}" target="_blank" class="p-6">
+                    <a href="{{ route('documento.listado') }}" class="p-6">
                         <div class="flex items-center">
                             <svg fill="none" stroke="currentColor" stroke-linecap="round"
                                 stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
@@ -2074,7 +2074,7 @@
                         </div>
                     </a>
 
-                    <a href="{{ route('noticia.listado') }}" target="_blank"
+                    <a href="{{ route('noticia.listado') }}"
                         class="p-6 border-t border-gray-200 dark:border-gray-700 md:border-l">
                         <div class="flex items-center">
                             <svg fill="none" stroke="currentColor" stroke-linecap="round"
@@ -2089,7 +2089,7 @@
                             </div>
                         </div>
                     </a>
-                    <a href="{{ route('tabposicion.listado') }}" target="_blank"
+                    <a href="{{ route('tabposicion.listado') }}"
                         class="p-6 border-t border-gray-200 dark:border-gray-700 md:border-l">
                         <div class="flex items-center">
                             <i class="fa fa-table text-gray-900 dark:text-white"></i>

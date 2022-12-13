@@ -168,10 +168,10 @@
         <table border="1">
             <thead>
                 <tr>
-                    <th>Fecha</th>
-                    <th>Hora</th>
+                    <th width="10%">Fecha</th>
+                    <th width="10%">Hora</th>
                     <th>Equipo 1</th>
-                    <th></th>
+                    <th width="8%"></th>
                     <th>Equipo 2</th>
                 </tr>
             </thead>
@@ -198,10 +198,10 @@
             <table border="1">
                 <thead>
                     <tr>
-                        <th>Fecha</th>
-                        <th>Hora</th>
+                        <th width="10%">Fecha</th>
+                        <th width="10%">Hora</th>
                         <th>Equipo 1</th>
-                        <th></th>
+                        <th width="8%"></th>
                         <th>Equipo 2</th>
                     </tr>
                 </thead>
@@ -224,10 +224,10 @@
             <table border="1">
                 <thead>
                     <tr>
-                        <th>Fecha</th>
-                        <th>Hora</th>
+                        <th width="10%">Fecha</th>
+                        <th width="10%">Hora</th>
                         <th>Equipo 1</th>
-                        <th></th>
+                        <th width="8%"></th>
                         <th>Equipo 2</th>
                     </tr>
                 </thead>
@@ -249,10 +249,10 @@
             <table border="1">
                 <thead>
                     <tr>
-                        <th>Fecha</th>
-                        <th>Hora</th>
+                        <th width="10%">Fecha</th>
+                        <th width="10%">Hora</th>
                         <th>Equipo 1</th>
-                        <th></th>
+                        <th width="8%"></th>
                         <th>Equipo 2</th>
                     </tr>
                 </thead>
