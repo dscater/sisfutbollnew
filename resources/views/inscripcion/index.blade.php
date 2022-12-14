@@ -90,10 +90,11 @@
                     </div>
                 </div>
             </div>
-
         </div>
-
     </div>
+    @if (session('variaciones'))
+        @include('modal.modal_generacion')
+    @endif
 @endsection
 @section('third_party_scripts')
     <script>

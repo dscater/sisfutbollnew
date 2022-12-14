@@ -4,13 +4,17 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>FUTBOL</title>
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
-        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
     <!-- Styles -->
     <style>
         /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
@@ -393,7 +397,7 @@
         }
 
         div.fondo {
-            background-image: url('fondo.jpg');
+            background-image: url('{{ asset('fondo.jpg') }}');
             background-repeat: no-repeat;
             background-size: 100% 100%;
         }
@@ -401,7 +405,6 @@
 </head>
 
 <body class="antialiased">
-
     <div
         class="fondo relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
         @if (Route::has('login'))
@@ -414,9 +417,9 @@
                         <span style="color:white">Iniciar sesión</span></a>
 
                     {{-- @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">
-                                <span  style="color:white">Registrarse</span></a>
-                        @endif --}}
+                        <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">
+                            <span style="color:white">Registrarse</span></a>
+                    @endif --}}
                 @endauth
             </div>
         @endif
@@ -2058,7 +2061,7 @@
             <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
                 <!--div class="grid grid-cols-1 md:grid-cols2"-->
                 <div class="grid grid-cols-1">
-                    <a href="{{ route('documento.listado') }}" class="p-6">
+                    <div class="p-6">
                         <div class="flex items-center">
                             <svg fill="none" stroke="currentColor" stroke-linecap="round"
                                 stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
@@ -2067,85 +2070,58 @@
                                     d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
                                 </path>
                             </svg>
-                            <div class="ml-4 text-lg leading-7 font-semibold  text-gray-600 dark:text-white">
+                            <div class="ml-4 text-lg leading-7 font-semibold  text-gray-600">
                                 <!--a href="https://laravel.com/docs" class="underline text-gray-900 dark:text-white">Documentation</a-->
-                                DOCUMENTACIÓN
+                                FIXTURE
                             </div>
                         </div>
-                    </a>
-
-                    <a href="{{ route('noticia.listado') }}"
-                        class="p-6 border-t border-gray-200 dark:border-gray-700 md:border-l">
-                        <div class="flex items-center">
-                            <svg fill="none" stroke="currentColor" stroke-linecap="round"
-                                stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
-                                class="w-8 h-8 text-gray-500">
-                                <path
-                                    d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
-                                </path>
-                            </svg>
-                            <div class="ml-4 text-lg leading-7 font-semibold text-gray-900 dark:text-white">NOTICIAS
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="form-group col-md-6 offset-md-3">
+                                    {{ Form::select('campeonato_id', $array_campeonatos, null, ['class' => 'form-control', 'required', 'id' => 'campeonato_id']) }}
+                                </div>
+                            </div>
+                            <div class="card-body" id="contenedor_tabla">
 
                             </div>
+                            <a href="{{ route('welcome') }}" class="btn btn-default">Volver a la página de
+                                inicio</a>
                         </div>
-                    </a>
-                    <a href="{{ route('fixturefinal.listado') }}"
-                        class="p-6 border-t border-gray-200 dark:border-gray-700 md:border-l">
-                        <div class="flex items-center">
-                            <i class="fa fa-list-alt text-gray-900 dark:text-white"></i>
-                            <div class="ml-4 text-lg leading-7 font-semibold text-gray-900 dark:text-white">FIXTURE
-                            </div>
-                        </div>
-                    </a>
-                    <a href="{{ route('tabposicion.listado') }}"
-                        class="p-6 border-t border-gray-200 dark:border-gray-700 md:border-l">
-                        <div class="flex items-center">
-                            <i class="fa fa-table text-gray-900 dark:text-white"></i>
-                            <div class="ml-4 text-lg leading-7 font-semibold text-gray-900 dark:text-white">TABLA DE POSICIONES
-                            </div>
-                        </div>
-                    </a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    <input type="hidden" value="{{ route('fixturefinal.getFixtureCampeonato') }}"
+        id="url_tabla_posiciones_campeonato">
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<meta name="csrf-token" content="{{ csrf_token() }}">
-<script type="text/javascript">
-    //    $(document).ready(function() {
+<script type="text/javascript"></script>
+<script>
+    let campeonato_id = $("#campeonato_id");
+    let contenedor_tabla = $("#contenedor_tabla");
+    campeonato_id.change(getEquiposCampeonato);
 
-    //       setInterval(mostrartabla, 1000);
-    //    });
-    //   function mostrartabla(){
-    //       $.ajaxSetup({
-    //           headers: {
-    //               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //           }
-    //       });
-    //       $.ajax({
-    //           headers: {
-    //               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //           },
-    //           url: "{{ route('noticia.welcome') }}",
-    //           type: "get",
-    //           success: function(dato){
-    //               var datJson=JSON.parse("[" + dato + "]");
-    //               var json_data = JSON.parse(dato);
-    //               var result = [];
-    //               var tabla = '';
-    //               var cont = 0;
-    //               //console.log(json_data);
-    //               //console.log(json_data.length);
-    //               for (var i = 0; i <= json_data.length; i++) {
-    //                   //console.log(json_data[i].id);
-
-    //                       tabla+='<tr> <!--td>'+json_data[i].id+'</td--><td>'+json_data[i].titulo+'</td><td>'+json_data[i].contenido+'</td>';
-    //               }
-    //               $('#tbodydatos').html(tabla);
-    //           }
-    //       })
-    //   }
+    function getEquiposCampeonato() {
+        contenedor_tabla.html("cargando...");
+        if (campeonato_id.val() != '') {
+            $.ajax({
+                type: "get",
+                url: $("#url_tabla_posiciones_campeonato").val(),
+                data: {
+                    id: campeonato_id.val()
+                },
+                dataType: "json",
+                success: function(response) {
+                    contenedor_tabla.html(response);
+                }
+            });
+        } else {
+            contenedor_tabla.html("Debes seleccionar un campeonato");
+        }
+    }
 </script>
 
 </html>

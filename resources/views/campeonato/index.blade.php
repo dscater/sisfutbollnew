@@ -85,10 +85,11 @@
                     </div>
                 </div>
             </div>
-
         </div>
-
     </div>
+    @if (session('variaciones'))
+        @include('modal.modal_generacion')
+    @endif
 @endsection
 
 
@@ -96,6 +97,7 @@
     <script>
         $('table.data-table').DataTable({
             columns: [
+                null,
                 null,
                 null,
                 null,

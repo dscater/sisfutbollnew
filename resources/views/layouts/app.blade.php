@@ -40,16 +40,16 @@
     }
 
     divf {
-        background-image: url('{{asset('fondo.jpg')}}');
+        background-image: url('{{ asset('fondo.jpg') }}');
         background-repeat: no-repeat;
         background-size: 100% 100%;
     }
 </style>
 
 <body class="font-sans antialiased"
-    style="background-image: url('{{asset('fondo.jpg')}}');background-repeat: no-repeat;background-size: cover;">
+    style="background-image: url('{{ asset('fondo.jpg') }}');background-repeat: no-repeat;background-size: cover;">
     <div class="wrapper"
-        style="background-image: url('{{asset('fondo.jpg')}}');background-repeat: no-repeat;background-size: cover;">
+        style="background-image: url('{{ asset('fondo.jpg') }}');background-repeat: no-repeat;background-size: cover;">
         <!-- Main Header -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
             <!-- Left navbar links -->
@@ -99,7 +99,7 @@
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper"
-            style="background-image: url('{{asset('fondo.jpg')}}');background-repeat: no-repeat;background-size: cover;">
+            style="background-image: url('{{ asset('fondo.jpg') }}');background-repeat: no-repeat;background-size: cover;">
             @yield('content')
         </div>
 
@@ -138,6 +138,10 @@
                 "previous": '<i class="fa fa-step-backward"></i>'
             }
         };
+
+        $("#modal_generacion").on("click", "button", function() {
+            $("#modal_generacion").css("display", "none");
+        })
     </script>
 
     @yield('third_party_scripts')

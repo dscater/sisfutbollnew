@@ -54,6 +54,7 @@ Route::get('equipos/editar/{id}', [EquipoClubController::class, 'edit'])->name('
 Route::patch('equipos/{id}', [EquipoClubController::class, 'update'])->name('equipos.patch');
 Route::put('equipos/{id}', [EquipoClubController::class, 'update'])->name('equipos.update');
 
+Route::get('jugadores/busca_registro/getJugador', [JugadorController::class, 'getJugador'])->name('jugadores.getJugador');
 Route::get('jugadores', [JugadorController::class, 'index'])->name('jugadores.index');
 Route::get('jugadores/create', [JugadorController::class, 'create'])->name('jugadores.create');
 Route::delete('jugadores/{id}', [JugadorController::class, 'destroy'])->name('jugadores.destroy');
@@ -107,6 +108,8 @@ Route::get('tabposicion/buscar', [TablaPosicionController::class, 'buscarcamp'])
 Route::get('tabposicion/{id}', [TablaPosicionController::class, 'actualizar'])->name('tabposicion.actulizar');
 Route::get('tabposicion/ganadores/{id}', [TablaPosicionController::class, 'Ganadores'])->name('tabposicion.ganadores');
 
+Route::get('fixturefinal/listado', [FixtureFinalController::class, 'listado'])->name('fixturefinal.listado');
+Route::get('fixturefinal/listado/getFixtureCampeonato', [FixtureFinalController::class, 'getFixtureCampeonato'])->name('fixturefinal.getFixtureCampeonato');
 Route::get('fixturefinal', [FixtureFinalController::class, 'index'])->name('fixturefinal.index');
 Route::get('fixturefinal/buscador', [FixtureFinalController::class, 'buscador'])->name('fixturefinal.buscador');
 Route::get('fixturefinal/{id}', [FixtureFinalController::class, 'generar'])->name('fixturefinal.generar');

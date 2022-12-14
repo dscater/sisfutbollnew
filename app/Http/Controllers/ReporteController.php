@@ -25,8 +25,10 @@ class ReporteController extends Controller
     public function tarjeta_jugador_pdf(Request $request)
     {
         $jugador = jugador::find($request->jugador_id);
-        $pdf = PDF::loadView('reportes.pdf.tarjeta_jugador', compact('jugador'));
-        return $pdf->stream('Tarjeta.pdf');
+        if ($jugador) {
+            $pdf = PDF::loadView('reportes.pdf.tarjeta_jugador', compact('jugador'));
+            return $pdf->stream('Tarjeta.pdf');
+        }
     }
 
     public function jugador()

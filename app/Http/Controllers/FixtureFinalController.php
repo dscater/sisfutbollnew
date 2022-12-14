@@ -39,6 +39,116 @@ class FixtureFinalController extends Controller
         ));
     }
 
+    public function listado(Request $request)
+    {
+        $campeonatos = campeonato::all();
+        $array_campeonatos[""] = "Seleccione campeonato";
+        foreach ($campeonatos as $value) {
+            $array_campeonatos[$value->id] = $value->nombre;
+        }
+        return view("fixturefinal.listado", compact("array_campeonatos"));
+    }
+    public function getFixtureCampeonato(Request $request)
+    {
+        $id = $request->id;
+        //echo $id."<br>";
+
+        $o_campeonato = campeonato::find($id);
+        $campeonato = campeonato::pluck('nombre', 'id');
+        $equipo = equipoClub::pluck('name', 'id');
+        /**  TIPOS
+         *  0: final
+         *  1: clasificatoria
+         *  2: semifinal
+         *  3: cuartos
+         *  4: Segunda Ronda (SERIE 6 - 7 equipos por grupo[1,2])
+         */
+
+        $clasificatorias = partido::where('campeonato_id', $id)->where('tipo', '1')->orderBy("fecha_Par", "asc")->get(); // clasificatorias
+        $partidos_terminados_clasificatorias = partido::where('campeonato_id', $id)->where('tipo', '1')->where("estado", 1)->orderBy("fecha_Par", "asc")->get(); // clasificatorias
+        $segunda_clasificatorias = partido::where('campeonato_id', $id)->where('tipo', '4')->orderBy("fecha_Par", "asc")->get(); // clasificatorias
+        $segunda_clasificatorias_terminados = partido::where('campeonato_id', $id)->where('tipo', '4')->where("estado", 1)->orderBy("fecha_Par", "asc")->get(); // clasificatorias
+        $cuartos = partido::where('campeonato_id', $id)->where('tipo', '3')->orderBy("fecha_Par", "asc")->get(); // cuartos
+        $cuartos_completos = partido::where('campeonato_id', $id)->where('tipo', '3')->where("estado", 1)->get(); // cuartos_completos
+        $semifinales = partido::where('campeonato_id', $id)->where('tipo', '2')->orderBy("fecha_Par", "asc")->get(); // semifinal
+        $semifinales_completos = partido::where('campeonato_id', $id)->where('tipo', '2')->where("estado", 1)->get(); // semifinales_completos
+        $final = partido::where('campeonato_id', $id)->where('tipo', '0')->get()->last(); // final
+
+        if ($o_campeonato->serie == 'SERIE 1') {
+            $html = view("fixturefinal.parcial.serie1", compact(
+                'o_campeonato',
+                'campeonato',
+                'equipo',
+                'clasificatorias',
+                'partidos_terminados_clasificatorias',
+                'segunda_clasificatorias',
+                'segunda_clasificatorias_terminados',
+                'cuartos',
+                'semifinales',
+                'final',
+                'cuartos_completos',
+                'semifinales_completos',
+                'id'
+            ))->render();
+        }
+
+        if ($o_campeonato->serie == 'SERIE 2') {
+            $html = view("fixturefinal.parcial.serie2", compact(
+                'o_campeonato',
+                'campeonato',
+                'equipo',
+                'clasificatorias',
+                'partidos_terminados_clasificatorias',
+                'segunda_clasificatorias',
+                'segunda_clasificatorias_terminados',
+                'cuartos',
+                'semifinales',
+                'final',
+                'cuartos_completos',
+                'semifinales_completos',
+                'id'
+            ))->render();
+        }
+
+        if ($o_campeonato->serie == 'SERIE 3') {
+            $html = view("fixturefinal.parcial.serie3", compact(
+                'o_campeonato',
+                'campeonato',
+                'equipo',
+                'clasificatorias',
+                'partidos_terminados_clasificatorias',
+                'segunda_clasificatorias',
+                'segunda_clasificatorias_terminados',
+                'cuartos',
+                'semifinales',
+                'final',
+                'cuartos_completos',
+                'semifinales_completos',
+                'id'
+            ))->render();
+        }
+
+        if ($o_campeonato->serie == 'SERIE 6') {
+            $html = view("fixturefinal.parcial.serie6", compact(
+                'o_campeonato',
+                'campeonato',
+                'equipo',
+                'clasificatorias',
+                'partidos_terminados_clasificatorias',
+                'segunda_clasificatorias',
+                'segunda_clasificatorias_terminados',
+                'cuartos',
+                'semifinales',
+                'final',
+                'cuartos_completos',
+                'semifinales_completos',
+                'id'
+            ))->render();
+        }
+
+        return response()->JSON($html);;
+    }
+
 
     public function buscador(Request $request)
     {

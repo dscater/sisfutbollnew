@@ -21,22 +21,28 @@
                                 <small><i>PENDIENTE</i></small>
                             @endif
                             <br />
-                            <a class="btn btn-primary" href="{{ route('partidos.edit', $value->id) }}">Ver y/o
-                                Editar</a>
+                            @if (Auth::check())
+                                <a class="btn btn-primary" href="{{ route('partidos.edit', $value->id) }}">Ver y/o
+                                    Editar</a>
+                            @endif
                         </div>
                     </div>
                 </div>
             @endforeach
             @if (count($clasificatorias) == count($partidos_terminados_clasificatorias))
                 <div class="col-md-6">
-                    <a class="btn btn-success btn-block btn-flat"
-                        href="{{ route('partidos.generar_segunda_ronda', $id) }}?sw=tt">GENERAR SEGUNDA RONDA DE
-                        CLASIFICATORIAS (Todos contra todos)</a>
+                    @if (Auth::check())
+                        <a class="btn btn-success btn-block btn-flat"
+                            href="{{ route('partidos.generar_segunda_ronda', $id) }}?sw=tt">GENERAR SEGUNDA RONDA DE
+                            CLASIFICATORIAS (Todos contra todos)</a>
+                    @endif
                 </div>
                 <div class="col-md-6">
-                    <a class="btn btn-success btn-block btn-flat"
-                        href="{{ route('partidos.generar_segunda_ronda', $id) }}?sw=iv">GENERAR SEGUNDA RONDA DE
-                        CLASIFICATORIAS (Ida y vuelta)</a>
+                    @if (Auth::check())
+                        <a class="btn btn-success btn-block btn-flat"
+                            href="{{ route('partidos.generar_segunda_ronda', $id) }}?sw=iv">GENERAR SEGUNDA RONDA DE
+                            CLASIFICATORIAS (Ida y vuelta)</a>
+                    @endif
                 </div>
             @endif
         @else
@@ -70,17 +76,21 @@
                                 <small><i>PENDIENTE</i></small>
                             @endif
                             <br />
-                            <a class="btn btn-primary" href="{{ route('partidos.edit', $value->id) }}">Ver y/o
-                                Editar</a>
+                            @if (Auth::check())
+                                <a class="btn btn-primary" href="{{ route('partidos.edit', $value->id) }}">Ver y/o
+                                    Editar</a>
+                            @endif
                         </div>
                     </div>
                 </div>
             @endforeach
             @if (count($segunda_clasificatorias) == count($segunda_clasificatorias_terminados))
                 <div class="col-md-12">
-                    <a class="btn btn-success btn-block btn-flat"
-                        href="{{ route('partidos.generar_cuartos', $id) }}">GENERAR CUARTOS DE
-                        FINAL</a>
+                    @if (Auth::check())
+                        <a class="btn btn-success btn-block btn-flat"
+                            href="{{ route('partidos.generar_cuartos', $id) }}">GENERAR CUARTOS DE
+                            FINAL</a>
+                    @endif
                 </div>
             @endif
         @else
@@ -113,17 +123,22 @@
                                 <small><i>PENDIENTE</i></small>
                             @endif
                             <br />
-                            <a class="btn btn-primary" href="{{ route('partidos.edit', $value->id) }}">Ver y/o
-                                Editar</a>
+                            @if (Auth::check())
+                                <a class="btn btn-primary" href="{{ route('partidos.edit', $value->id) }}">Ver y/o
+                                    Editar</a>
+                            @endif
                         </div>
                     </div>
                 </div>
             @endforeach
             @if (count($cuartos_completos) == count($cuartos))
                 <div class="col-md-12">
-                    <a class="btn btn-success btn-block btn-flat" href="{{ route('partidos.semifinal', $id) }}">GENERAR
-                        PARTIDOS DE
-                        SEMIFINAL</a>
+                    @if (Auth::check())
+                        <a class="btn btn-success btn-block btn-flat"
+                            href="{{ route('partidos.semifinal', $id) }}">GENERAR
+                            PARTIDOS DE
+                            SEMIFINAL</a>
+                    @endif
                 </div>
             @endif
         @else
@@ -157,16 +172,20 @@
                                 <small><i>PENDIENTE</i></small>
                             @endif
                             <br />
-                            <a class="btn btn-primary" href="{{ route('partidos.edit', $value->id) }}">Ver y/o
-                                Editar</a>
+                            @if (Auth::check())
+                                <a class="btn btn-primary" href="{{ route('partidos.edit', $value->id) }}">Ver y/o
+                                    Editar</a>
+                            @endif
                         </td>
                     </tr>
                 @endforeach
                 @if (count($semifinales_completos) == count($semifinales))
                     <tr>
                         <td class="text-center">
-                            <a class="btn btn-success" href="{{ route('partidos.final', $id) }}">GENERAR PARTIDO
-                                FINAL</a>
+                            @if (Auth::check())
+                                <a class="btn btn-success" href="{{ route('partidos.final', $id) }}">GENERAR PARTIDO
+                                    FINAL</a>
+                            @endif
 
                         </td>
                     </tr>
@@ -194,16 +213,20 @@
                             <small><i>PENDIENTE</i></small>
                         @endif
                         <br />
-                        <a class="btn btn-primary" href="{{ route('partidos.edit', $final->id) }}">Ver y/o
-                            Editar</a>
+                        @if (Auth::check())
+                            <a class="btn btn-primary" href="{{ route('partidos.edit', $final->id) }}">Ver y/o
+                                Editar</a>
+                        @endif
                     </td>
                 </tr>
                 @if ($final->estado == 1)
                     <tr>
                         <td class="text-center">
-                            <a href="{{ route('partidodownload-pdf', $id) }}" target="_blank" class="btn btn-info"><i
-                                    class="nav-icon fas fa-download"></i>
-                                Reporte PDF</a>
+                            @if (Auth::check())
+                                <a href="{{ route('partidodownload-pdf', $id) }}" target="_blank"
+                                    class="btn btn-info"><i class="nav-icon fas fa-download"></i>
+                                    Reporte PDF</a>
+                            @endif
                         </td>
                     </tr>
                 @endif

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\equipoClub;
 use App\Models\jugador;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class JugadorController extends Controller
 {
@@ -140,5 +141,26 @@ class JugadorController extends Controller
     {
         jugador::find($id)->delete();
         return redirect()->route('jugadores.index');
+    }
+
+    public function getJugador(Request $request)
+    {
+        $filtro = $request->filtro;
+        $valor = $request->valor;
+        $jugador = null;
+
+        switch ($filtro) {
+            case 'id':
+                $jugador = jugador::find($valor);
+                break;
+            case 'nom':
+                $jugador = jugador::where(DB::raw('CONCAT(nom," ", apep," ", apem)'), 'LIKE', "%$valor%")->get()->first();
+                break;
+            case 'ci':
+                $jugador = jugador::where("ci", $valor)->get()->first();
+                break;
+        }
+
+        return response()->JSON($jugador);
     }
 }

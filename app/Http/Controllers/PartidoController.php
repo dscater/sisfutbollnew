@@ -224,6 +224,8 @@ class PartidoController extends Controller
             6 => "F",
         ];
 
+        $total_partidos = 0;
+        $partidos_grupo = 0;
         for ($i = 1; $i <= $grupos; $i++) {
             $index = ($i - 1) * $equipos_grupo;
             $final_index = $equipos_grupo * $i;
@@ -242,14 +244,31 @@ class PartidoController extends Controller
                 $grupo = $array_grupos[$i];
             }
             if ($sw == 'tt') {
-                PartidoController::todos_contra_todos($equipos, $campeonato->id, 1, $grupo);
+                $total_partidos_generados = PartidoController::todos_contra_todos($equipos, $campeonato->id, 1, $grupo);
+                $total_partidos += $total_partidos_generados;
+                $partidos_grupo = $total_partidos_generados;
             } else {
-                PartidoController::ida_vuelta($equipos, $campeonato->id, 1, $grupo);
+                $total_partidos_generados = PartidoController::ida_vuelta($equipos, $campeonato->id, 1, $grupo);
+                $total_partidos += $total_partidos_generados;
+                $partidos_grupo = $total_partidos_generados;
             }
         }
 
-        $partidos = partido::all()->sortByDesc("fecha_Par");
-        return redirect()->back()->with("bien", "Generación de partidos Todos vs Todos se realizó con éxito");
+        $variaciones = $total_partidos;
+        $combinaciones = $partidos_grupo;
+        return redirect()->back()->with("bien", "Generación de partidos Todos vs Todos se realizó con éxito")
+            ->with("variaciones", $variaciones)
+            ->with("combinaciones", $combinaciones);
+    }
+
+
+    public static function obtieneFactorial($numero)
+    {
+        $factorial = 1;
+        for ($i = 1; $i <= $numero; $i++) {
+            $factorial = $factorial * $i;
+        }
+        return $factorial;
     }
 
     public function generar_segunda_ronda($id, Request $request)
@@ -517,6 +536,7 @@ class PartidoController extends Controller
         $total_equipos = count($equipos);
         $fechas_partidos = PartidoController::generaPartidosFecha($total_equipos, $equipos);
 
+        $total_partidos = 0;
         foreach ($fechas_partidos as $partidos) {
             foreach ($partidos as $partido) {
                 // registrar el partido
@@ -529,9 +549,10 @@ class PartidoController extends Controller
                     "fecha_Par" => $partido["fecha"],
                     "hora" => $partido["hora"],
                 ]);
+                $total_partidos++;
             }
         }
-        return true;
+        return $total_partidos;
     }
 
     public static function ida_vuelta($equipos, $id, $tipo = 1, $grupo = NULL)
@@ -539,6 +560,7 @@ class PartidoController extends Controller
         $total_equipos = count($equipos);
         $fechas_partidos = PartidoController::generaPartidosFecha($total_equipos, $equipos);
         // IDA
+        $total_partidos = 0;
         foreach ($fechas_partidos as $partidos) {
             foreach ($partidos as $partido) {
                 // registrar el partido
@@ -549,6 +571,7 @@ class PartidoController extends Controller
                     "tipo" => $tipo,
                     "grupo" => $grupo
                 ]);
+                $total_partidos++;
             }
         }
         // VUELTA
@@ -562,9 +585,10 @@ class PartidoController extends Controller
                     "tipo" => $tipo,
                     "grupo" => $grupo
                 ]);
+                $total_partidos++;
             }
         }
-        return true;
+        return $total_partidos;
     }
 
     public static function generaPartidosFecha($total_equipos, $equipos)
