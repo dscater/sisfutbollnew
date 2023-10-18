@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container-fluid">
-        <h1 class="text-success-50">Reportes - Tarjeta de jugador</h1>
+        <h1 class="text-dark">Reportes - Tarjeta de jugador</h1>
 
         <div>
             <div class="row justify-content-center">

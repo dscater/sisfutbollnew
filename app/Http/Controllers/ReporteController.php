@@ -78,18 +78,43 @@ class ReporteController extends Controller
     public function fixture_pdf(Request $request)
     {
         $id = $request->campeonato_id;
+        $s_fecha = $request->s_fecha;
+        $fecha = $request->fecha;
         $o_campeonato = campeonato::find($id);
         $campeonato = campeonato::pluck('nombre', 'id');
         $equipo = equipoClub::pluck('name', 'id');
-        $clasificatorias = partido::where('campeonato_id', $id)->where('tipo', '1')->orderBy("fecha_Par", "asc")->get(); // clasificatorias
-        $partidos_terminados_clasificatorias = partido::where('campeonato_id', $id)->where('tipo', '1')->where("estado", 1)->orderBy("fecha_Par", "asc")->get(); // clasificatorias
-        $segunda_clasificatorias = partido::where('campeonato_id', $id)->where('tipo', '4')->orderBy("fecha_Par", "asc")->get(); // clasificatorias
-        $segunda_clasificatorias_terminados = partido::where('campeonato_id', $id)->where('tipo', '4')->where("estado", 1)->orderBy("fecha_Par", "asc")->get(); // clasificatorias
-        $cuartos = partido::where('campeonato_id', $id)->where('tipo', '3')->orderBy("fecha_Par", "asc")->get(); // cuartos
-        $cuartos_completos = partido::where('campeonato_id', $id)->where('tipo', '3')->where("estado", 1)->get(); // cuartos_completos
-        $semifinales = partido::where('campeonato_id', $id)->where('tipo', '2')->orderBy("fecha_Par", "asc")->get(); // semifinal
-        $semifinales_completos = partido::where('campeonato_id', $id)->where('tipo', '2')->where("estado", 1)->get(); // semifinales_completos
-        $final = partido::where('campeonato_id', $id)->where('tipo', '0')->get()->last(); // final
+
+        if ($s_fecha != "todos") {
+            $clasificatorias = partido::where('campeonato_id', $id)
+                ->where("fecha_Par", $fecha)->where('tipo', '1')->orderBy("fecha_Par", "asc")->get(); // clasificatorias
+            $partidos_terminados_clasificatorias = partido::where('campeonato_id', $id)
+                ->where("fecha_Par", $fecha)->where('tipo', '1')->where("estado", 1)->orderBy("fecha_Par", "asc")->get(); // clasificatorias
+            $segunda_clasificatorias = partido::where('campeonato_id', $id)
+                ->where("fecha_Par", $fecha)->where('tipo', '4')->orderBy("fecha_Par", "asc")->get(); // clasificatorias
+            $segunda_clasificatorias_terminados = partido::where('campeonato_id', $id)
+                ->where("fecha_Par", $fecha)->where('tipo', '4')->where("estado", 1)->orderBy("fecha_Par", "asc")->get(); // clasificatorias
+            $cuartos = partido::where('campeonato_id', $id)
+                ->where("fecha_Par", $fecha)->where('tipo', '3')->orderBy("fecha_Par", "asc")->get(); // cuartos
+            $cuartos_completos = partido::where('campeonato_id', $id)
+                ->where("fecha_Par", $fecha)->where('tipo', '3')->where("estado", 1)->get(); // cuartos_completos
+            $semifinales = partido::where('campeonato_id', $id)
+                ->where("fecha_Par", $fecha)->where('tipo', '2')->orderBy("fecha_Par", "asc")->get(); // semifinal
+            $semifinales_completos = partido::where('campeonato_id', $id)
+                ->where("fecha_Par", $fecha)->where('tipo', '2')->where("estado", 1)->get(); // semifinales_completos
+            $final = partido::where('campeonato_id', $id)
+                ->where("fecha_Par", $fecha)->where('tipo', '0')->get()->last(); // final
+        } else {
+            $clasificatorias = partido::where('campeonato_id', $id)->where('tipo', '1')->orderBy("fecha_Par", "asc")->get(); // clasificatorias
+            $partidos_terminados_clasificatorias = partido::where('campeonato_id', $id)->where('tipo', '1')->where("estado", 1)->orderBy("fecha_Par", "asc")->get(); // clasificatorias
+            $segunda_clasificatorias = partido::where('campeonato_id', $id)->where('tipo', '4')->orderBy("fecha_Par", "asc")->get(); // clasificatorias
+            $segunda_clasificatorias_terminados = partido::where('campeonato_id', $id)->where('tipo', '4')->where("estado", 1)->orderBy("fecha_Par", "asc")->get(); // clasificatorias
+            $cuartos = partido::where('campeonato_id', $id)->where('tipo', '3')->orderBy("fecha_Par", "asc")->get(); // cuartos
+            $cuartos_completos = partido::where('campeonato_id', $id)->where('tipo', '3')->where("estado", 1)->get(); // cuartos_completos
+            $semifinales = partido::where('campeonato_id', $id)->where('tipo', '2')->orderBy("fecha_Par", "asc")->get(); // semifinal
+            $semifinales_completos = partido::where('campeonato_id', $id)->where('tipo', '2')->where("estado", 1)->get(); // semifinales_completos
+            $final = partido::where('campeonato_id', $id)->where('tipo', '0')->get()->last(); // final
+        }
+
 
         if ($o_campeonato->serie == 'SERIE 1') {
             $pdf = PDF::loadView('reportes.pdf.parcial.fixture1', compact(
@@ -105,7 +130,9 @@ class ReporteController extends Controller
                 'final',
                 'cuartos_completos',
                 'semifinales_completos',
-                'id'
+                'id',
+                "s_fecha",
+                "fecha"
             ))->setPaper('letter', 'portrait');
             return $pdf->stream('fixture.pdf');
         }
@@ -123,7 +150,9 @@ class ReporteController extends Controller
                 'final',
                 'cuartos_completos',
                 'semifinales_completos',
-                'id'
+                'id',
+                "s_fecha",
+                "fecha"
             ))->setPaper('letter', 'portrait');
             return $pdf->stream('fixture.pdf');
         }
@@ -141,7 +170,9 @@ class ReporteController extends Controller
                 'final',
                 'cuartos_completos',
                 'semifinales_completos',
-                'id'
+                'id',
+                "s_fecha",
+                "fecha"
             ))->setPaper('letter', 'portrait');
             return $pdf->stream('fixture.pdf');
         }
@@ -159,7 +190,9 @@ class ReporteController extends Controller
                 'final',
                 'cuartos_completos',
                 'semifinales_completos',
-                'id'
+                'id',
+                "s_fecha",
+                "fecha"
             ))->setPaper('letter', 'portrait');
             return $pdf->stream('fixture.pdf');
         }

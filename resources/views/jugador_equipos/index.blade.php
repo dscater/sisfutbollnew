@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container-fluid">
-        <h1 class="text-success-50">Equipos anteriores - {{$jugador->full_name}}</h1>
+        <h1 class="text-dark">Equipos anteriores - {{$jugador->full_name}}</h1>
 
         <div>
             <div class="row justify-content-center">

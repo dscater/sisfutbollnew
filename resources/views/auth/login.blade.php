@@ -40,7 +40,7 @@
     style="background-image: url('fondo.jpg');background-repeat: no-repeat;background-size: cover;">
     <div class="login-box transpa-bg">
         <div class="login-logo">
-            <a href="{{ url('/home') }}"><b class="text-white">{{ config('app.name') }}</b></a>
+            <a href="{{ url('/home') }}"><b class="text-white">* LIGA DEPORTIVA * "EL TEJAR"</b></a>
         </div>
         <!-- /.login-logo -->
 

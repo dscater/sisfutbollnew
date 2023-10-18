@@ -1,7 +1,7 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color:rgb(5, 162, 44);">
     <a href="{{ route('home') }}" class="brand-link">
-        <span style="color:white; font-size: 25px; diaplay:block;margin: 0 auto; text-aling:center">SISTEMA </span><br>
-        <span style="color:white; font-size: 25px;">FUTBOL</span> <br>
+        <span style="color:white; font-size: 25px; diaplay:block;margin: 0 auto; text-aling:center">LIGA DEPORTIVA</span><br>
+        <span style="color:white; font-size: 25px;">"EL TEJAR"</span> <br>
         <svg width="200" height="150" id="Soccer" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink">
             <defs>

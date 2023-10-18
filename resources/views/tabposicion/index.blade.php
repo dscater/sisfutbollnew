@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container-fluid">
-        <h1 class="text-blue-50">Tablero de Posiciones por Campeonato.</h1>
+        <h1 class="text-dark">Tablero de Posiciones por Campeonato.</h1>
         {{-- <div class="section-body">
             <div class="card">
                 <div class="card-body">

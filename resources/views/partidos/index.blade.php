@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container-fluid">
-        <h1 class="text-blue-50">Partidos</h1>
+        <h1 class="text-dark">Partidos</h1>
         <div class="section-body">
             <div class="card">
                 <div class="card-body">

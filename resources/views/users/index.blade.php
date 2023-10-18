@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container-fluid">
-        <h1 class="text-success-50">Usuarios</h1>
+        <h1 class="text-dark">Usuarios</h1>
 
         <div>
             <div class="row justify-content-center">

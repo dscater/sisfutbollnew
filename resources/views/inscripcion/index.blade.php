@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container-fluid">
-        <h1 class="text-blue-50">Inscribir</h1>
+        <h1 class="text-dark">Inscribir</h1>
 
         <div>
             <div class="row justify-content-center">

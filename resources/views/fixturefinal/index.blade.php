@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container-fluid">
-        <h1 class="text-blue-50">Fixture Finales</h1>
+        <h1 class="text-dark">Fixture Finales</h1>
 
         <div class="section-body">
             <div class="card">

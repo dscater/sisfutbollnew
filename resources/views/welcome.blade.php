@@ -2051,7 +2051,7 @@
                     </g>
                 </svg>
 
-                <h1><span style="color:white">LIGA DEPORTIVA DE FUTBOL</span></h1>
+                <h1><span style="color:white">LIGA DEPORTIVA "EL TEJAR"</span></h1>
 
             </div>
 

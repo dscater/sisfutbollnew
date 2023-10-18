@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container-fluid">
-        <h1 class="text-white-50">Equipos</h1>
+        <h1 class="text-dark">Equipos</h1>
         <div>
             <div class="row justify-content-center">
                 <div class="col-12">

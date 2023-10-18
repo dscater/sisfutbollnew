@@ -2,6 +2,6 @@
 
 @section('content')
     <div class="container-fluid">
-        <h1 class="text-white-50">BIENVENIDOS</h1>
+        <h1 class="text-white"></h1>
     </div>
 @endsection

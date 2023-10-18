@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container-fluid">
-        <h1 class="text-black-50">Nuevo usuario</h1>
+        <h1 class="text-dark">Nuevo usuario</h1>
         <div class="section-body">
             <div class="row">
                 <div class="col-lg-12">

@@ -256,7 +256,12 @@ class PartidoController extends Controller
 
         $variaciones = $total_partidos;
         $combinaciones = $partidos_grupo;
-        return redirect()->back()->with("bien", "Generación de partidos Todos vs Todos se realizó con éxito")
+
+        $mensaje = "Generación de partidos Todos vs Todos se realizó con éxito";
+        if ($sw != "tt") {
+            $mensaje = "Generación de partidos Ida y Vuelta se realizó con éxito";
+        }
+        return redirect()->back()->with("bien", $mensaje)
             ->with("variaciones", $variaciones)
             ->with("combinaciones", $combinaciones);
     }
